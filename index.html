@@ -657,11 +657,11 @@
     const TRAIN_LABELS = { online:'Online', offline:'Offline', both:'Both' };
     const CATEGORY_ANGLES = {
       latent: -Math.PI / 2,
-      autoregressive: -0.18,
-      diffusion: Math.PI / 3,
-      hybrid: Math.PI * 0.92,
-      evaluation: Math.PI * 1.2,
-      application: Math.PI * 1.5,
+      autoregressive: -0.08,
+      diffusion: Math.PI / 2,
+      hybrid: Math.PI,
+      evaluation: Math.PI * 1.28,
+      application: Math.PI * 1.58,
     };
     const DOMAIN_OFFSETS = {
       robotics: -0.34,
@@ -729,13 +729,30 @@
     function buildNodes() {
       const years = [...new Set(PAPERS.map(p => p.year))].sort();
       const yIdx = {}; years.forEach((y,i) => yIdx[y] = i);
+      const perYear = {};
+      PAPERS.forEach(p => {
+        if (!perYear[p.year]) perYear[p.year] = [];
+        perYear[p.year].push(p);
+      });
+      Object.values(perYear).forEach(arr => {
+        arr.sort((a, b) => {
+          const ca = CATEGORY_ANGLES[a.category] ?? 0;
+          const cb = CATEGORY_ANGLES[b.category] ?? 0;
+          return ca - cb || a.title.localeCompare(b.title);
+        });
+      });
 
       nodes = PAPERS.map(p => {
         const ring = yIdx[p.year];
+        const ringPapers = perYear[p.year];
+        const idxInYear = ringPapers.findIndex(item => item.id === p.id);
+        const spreadAngle = (idxInYear / Math.max(ringPapers.length, 1)) * Math.PI * 2;
         const baseAngle = CATEGORY_ANGLES[p.category] ?? 0;
         const domainJitter = DOMAIN_OFFSETS[p.domain] ?? 0;
-        const angle = baseAngle + domainJitter + (Math.random() - 0.5) * 0.34;
-        const r = 80 + ring * 110 + (Math.random() - 0.5) * 38;
+        const blend = ringPapers.length > 10 ? 0.32 : 0.42;
+        const angle = spreadAngle * (1 - blend) + (baseAngle + domainJitter) * blend;
+        const stagger = ((idxInYear % 3) - 1) * 14;
+        const r = 88 + ring * 112 + stagger;
         return {
           ...p,
           x: Math.cos(angle) * r,
@@ -743,6 +760,7 @@
           vx: 0, vy: 0,
           r: 5 + ((p.cites||[]).length) * 1.8 + (isStructuredPaper(p) ? 0.9 : 0),
           ring,
+          angle,
         };
       });
       nodeMap = {};
@@ -750,12 +768,12 @@
     }
 
     function simulate() {
-      const repK = 2500;
-      const springK = 0.012;
-      const springLen = 130;
-      const damp = 0.88;
+      const repK = 3600;
+      const springK = 0.006;
+      const springLen = 118;
+      const damp = 0.86;
 
-      for (let iter = 0; iter < 280; iter++) {
+      for (let iter = 0; iter < 220; iter++) {
         // repulsion
         for (let i = 0; i < nodes.length; i++) {
           for (let j = i+1; j < nodes.length; j++) {
@@ -782,16 +800,24 @@
         });
         // ring pull
         nodes.forEach(n => {
-          const tgt = 80 + n.ring * 110;
+          const tgt = 88 + n.ring * 112;
           const cur = Math.sqrt(n.x*n.x + n.y*n.y) || 1;
-          const diff = (tgt - cur) * 0.04;
+          const diff = (tgt - cur) * 0.12;
           n.vx += (n.x/cur) * diff;
           n.vy += (n.y/cur) * diff;
         });
+        // angular anchor to preserve clean year-ring distribution
+        nodes.forEach(n => {
+          const tgt = 88 + n.ring * 112;
+          const ax = Math.cos(n.angle) * tgt;
+          const ay = Math.sin(n.angle) * tgt;
+          n.vx += (ax - n.x) * 0.018;
+          n.vy += (ay - n.y) * 0.018;
+        });
         // center pull
         nodes.forEach(n => {
-          n.vx -= n.x * 0.0008;
-          n.vy -= n.y * 0.0008;
+          n.vx -= n.x * 0.0005;
+          n.vy -= n.y * 0.0005;
           n.vx *= damp;
           n.vy *= damp;
           n.x += n.vx;
@@ -1234,18 +1260,21 @@
         const sv = vis(s), tv = vis(t);
         if (!sv || !tv) return;
 
-        const hi = selected && (s.id === selected.id || t.id === selected.id);
-        const alpha = hi ? 0.55 : (sv && tv ? 0.12 : 0.03);
+        const hi = (selected && (s.id === selected.id || t.id === selected.id))
+          || (hovered && (s.id === hovered.id || t.id === hovered.id));
+        const activeFocus = !!(selected || hovered);
+        const alpha = hi ? 0.52 : (activeFocus ? 0.02 : 0.035);
 
         const mx = (s.x+t.x)/2, my = (s.y+t.y)/2;
         const dx = t.x-s.x, dy = t.y-s.y;
-        const cpx = mx - dy*0.12, cpy = my + dx*0.12;
+        const curve = hi ? 0.11 : 0.07;
+        const cpx = mx - dy*curve, cpy = my + dx*curve;
 
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
         ctx.quadraticCurveTo(cpx, cpy, t.x, t.y);
         ctx.strokeStyle = hi ? `rgba(196,93,62,${alpha})` : `rgba(107,102,92,${alpha})`;
-        ctx.lineWidth = hi ? 1.8 : 0.8;
+        ctx.lineWidth = hi ? 1.8 : 0.55;
         ctx.stroke();
 
         // arrowhead on highlighted
