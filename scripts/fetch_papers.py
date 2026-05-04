@@ -1,52 +1,78 @@
 #!/usr/bin/env python3
 """
 Fetch new world model papers from arxiv and append them to papers.js.
-Run quarterly via GitHub Actions, or manually: python scripts/fetch_papers.py
+
+Usage:
+  python scripts/fetch_papers.py              # last 18 months (catches missed quarters)
+  python scripts/fetch_papers.py --months 6   # shorter window for quarterly runs
+
+Runs quarterly via GitHub Actions (workflow_dispatch also available).
 """
 import arxiv
 import json
 import re
 import sys
+import argparse
 from datetime import datetime, timedelta
 from pathlib import Path
 
+# ── arxiv queries ─────────────────────────────────────────────────────────────
+# ti: = title field   cat: = arxiv category (cs.LG/cs.RO/cs.CV/cs.AI)
+# Pinning to CS categories prevents physics/astro false positives.
 QUERIES = [
-    "world model reinforcement learning",
-    "world model robot manipulation",
-    "world model autonomous driving",
-    "diffusion world model",
-    "latent world model video prediction",
-    "generative world model planning",
-    "neural world model policy",
+    'ti:"world model" AND (cat:cs.LG OR cat:cs.AI OR cat:cs.RO OR cat:cs.CV)',
+    'ti:"world models" AND (cat:cs.LG OR cat:cs.AI OR cat:cs.RO OR cat:cs.CV)',
+    'ti:"world foundation model" AND (cat:cs.LG OR cat:cs.AI OR cat:cs.RO OR cat:cs.CV)',
+    'ti:"neural world model" AND cat:cs.LG',
+    'ti:"video world model" AND (cat:cs.LG OR cat:cs.CV)',
+    'ti:"diffusion world model" AND (cat:cs.LG OR cat:cs.CV)',
+    'ti:"latent world model" AND cat:cs.LG',
+    'ti:"generative world model" AND (cat:cs.LG OR cat:cs.AI)',
 ]
 
-LOOKBACK_MONTHS = 4
+# At least one of these must appear in title+abstract for a paper to be included
+RELEVANCE_KEYWORDS = [
+    "reinforcement learning", "model-based", "model based",
+    "policy", "planning", "simulation", "robot", "driving",
+    "dynamics model", "latent dynamics", "video generation",
+    "game", "agent", "environment model", "imagination",
+    "world model", "world models",
+]
+
+DEFAULT_LOOKBACK_MONTHS = 18
+
+
+def is_relevant(title: str, summary: str) -> bool:
+    text = (title + " " + summary).lower()
+    return any(kw in text for kw in RELEVANCE_KEYWORDS)
 
 
 def categorize(title: str, summary: str):
     text = (title + " " + summary).lower()
 
-    if any(w in text for w in ["diffusion", "score matching", "ddpm", "ddim", "flow matching"]):
+    if any(w in text for w in ["diffusion", "score matching", "ddpm", "ddim", "flow matching", "denoising"]):
         category = "diffusion"
-    elif any(w in text for w in ["autoregressive", "transformer", "gpt", "token-based", "vq-vae", "discrete token"]):
+    elif any(w in text for w in ["autoregressive", "gpt", "discrete token", "vq-vae", "vqvae", "codebook", "next-token"]):
         category = "autoregressive"
-    elif any(w in text for w in ["latent space", "rssm", "variational", "vae", "latent dynamic"]):
+    elif any(w in text for w in ["transformer", "attention"]) and "latent" not in text:
+        category = "autoregressive"
+    elif any(w in text for w in ["latent space", "rssm", "variational", "vae", "latent dynamic", "latent representation"]):
         category = "latent"
     else:
         category = "hybrid"
 
-    if any(w in text for w in ["driv", "vehicle", "waymo", "nuplan", "carla", "nuScenes"]):
+    if any(w in text for w in ["driv", "vehicle", "waymo", "nuplan", "carla", "nuscenes", "autonomous"]):
         domain = "autonomous_driving"
-    elif any(w in text for w in ["robot", "manipulation", "locomotion", "gripper", "dexterous"]):
+    elif any(w in text for w in ["robot", "manipulation", "locomotion", "gripper", "dexterous", "embodied"]):
         domain = "robotics"
-    elif any(w in text for w in ["atari", "minecraft", "game", "doom", "openai gym", "procgen"]):
+    elif any(w in text for w in ["atari", "minecraft", "game", "doom", "procgen", "gaming"]):
         domain = "gaming"
-    elif any(w in text for w in ["video generation", "video synthesis", "text-to-video"]):
+    elif any(w in text for w in ["video generation", "video synthesis", "text-to-video", "video prediction"]):
         domain = "video"
     else:
         domain = "general"
 
-    if any(w in text for w in ["online", "reinforcement learning", "on-policy", "real-time interaction"]):
+    if any(w in text for w in ["online", "reinforcement learning", "on-policy", "real-time interaction", "real robot"]):
         training = "online"
     else:
         training = "offline"
@@ -60,13 +86,19 @@ def slugify(title: str) -> str:
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--months", type=int, default=DEFAULT_LOOKBACK_MONTHS,
+                        help="How many months back to search")
+    args = parser.parse_args()
+
     papers_js = Path(__file__).parent.parent / "papers.js"
     content = papers_js.read_text()
 
     existing_arxiv_ids = set(re.findall(r"arxiv\.org/abs/([0-9]+\.[0-9]+)", content))
-    existing_titles = set(t.lower() for t in re.findall(r'title:\s*"([^"]+)"', content))
+    existing_titles_lower = set(t.lower() for t in re.findall(r'title:\s*"([^"]+)"', content))
 
-    cutoff = datetime.now() - timedelta(days=LOOKBACK_MONTHS * 30)
+    cutoff = datetime.now() - timedelta(days=args.months * 30)
+    print(f"Searching arxiv for world model papers since {cutoff.strftime('%Y-%m-%d')} …\n")
 
     client = arxiv.Client(num_retries=3, delay_seconds=3)
     seen_ids: set[str] = set()
@@ -75,7 +107,7 @@ def main():
     for query in QUERIES:
         search = arxiv.Search(
             query=query,
-            max_results=25,
+            max_results=30,
             sort_by=arxiv.SortCriterion.SubmittedDate,
             sort_order=arxiv.SortOrder.Descending,
         )
@@ -88,7 +120,10 @@ def main():
                 arxiv_id = result.get_short_id().split("v")[0]
                 if arxiv_id in existing_arxiv_ids or arxiv_id in seen_ids:
                     continue
-                if result.title.lower() in existing_titles:
+                if result.title.lower() in existing_titles_lower:
+                    continue
+                if not is_relevant(result.title, result.summary):
+                    print(f"  skip (not relevant): {result.title}")
                     continue
 
                 seen_ids.add(arxiv_id)
@@ -121,10 +156,10 @@ def main():
                     "cites": [],
                 })
         except Exception as exc:
-            print(f"Warning: query '{query}' failed — {exc}", file=sys.stderr)
+            print(f"Warning: query failed — {exc}", file=sys.stderr)
 
     if not new_papers:
-        print("No new papers found.")
+        print("No new relevant papers found.")
         return 0
 
     added_date = datetime.now().strftime("%Y-%m-%d")
@@ -146,7 +181,6 @@ def main():
   }},
 """
 
-    # Insert before the closing ]; of the PAPERS array
     updated = content.replace(
         "\n];\n\n// Build edges",
         js_block + "];\n\n// Build edges",
@@ -157,9 +191,9 @@ def main():
         return 1
 
     papers_js.write_text(updated)
-    print(f"Added {len(new_papers)} new paper(s):")
+    print(f"\nAdded {len(new_papers)} paper(s):\n")
     for p in new_papers:
-        print(f"  [{p['category']}/{p['domain']}] {p['title']} ({p['year']})")
+        print(f"  [{p['year']}] [{p['category']}/{p['domain']}] {p['title']}")
     return len(new_papers)
 
 
