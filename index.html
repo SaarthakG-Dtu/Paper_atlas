@@ -951,40 +951,90 @@
       requestAnimationFrame(render);
     }
 
+    // One distinct colour per year ring — cool → warm as time progresses
+    const YEAR_PALETTE = [
+      '#4a7fc1', // 2018 — steel blue
+      '#3a9fa8', // 2019 — teal
+      '#38a876', // 2020 — jade
+      '#72b84e', // 2021 — lime
+      '#c4a832', // 2022 — gold
+      '#d4773a', // 2023 — amber-orange
+      '#c45040', // 2024 — terracotta
+      '#a03060', // 2025 — deep rose
+    ];
+
+    function yearColor(idx) {
+      return YEAR_PALETTE[idx % YEAR_PALETTE.length];
+    }
+
+    function pillBadge(label, cx, cy, color) {
+      ctx.save();
+      ctx.font = `600 11px "DM Sans", sans-serif`;
+      const tw = ctx.measureText(label).width;
+      const pw = tw + 18, ph = 20, pr = 10;
+      const px = cx - pw / 2, py = cy - ph / 2;
+
+      // filled pill
+      ctx.beginPath();
+      ctx.moveTo(px + pr, py);
+      ctx.lineTo(px + pw - pr, py);
+      ctx.arcTo(px + pw, py, px + pw, py + ph, pr);
+      ctx.lineTo(px + pw, py + ph - pr);
+      ctx.arcTo(px + pw, py + ph, px + pw - pr, py + ph, pr);
+      ctx.lineTo(px + pr, py + ph);
+      ctx.arcTo(px, py + ph, px, py + ph - pr, pr);
+      ctx.lineTo(px, py + pr);
+      ctx.arcTo(px, py, px + pr, py, pr);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      // thin white border for crispness
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, cx, cy);
+      ctx.restore();
+    }
+
     function drawWeb() {
       const years = [...new Set(PAPERS.map(p=>p.year))].sort();
 
-      // concentric rings
-      years.forEach((y, i) => {
-        const r = 80 + i * 110;
-        ctx.beginPath();
-        ctx.arc(0, 0, r, 0, Math.PI*2);
-        ctx.strokeStyle = 'rgba(201,195,184,0.35)';
-        ctx.lineWidth = 0.7;
-        ctx.stroke();
-
-        // year label
-        const la = -Math.PI/2 + i * 0.18;
-        ctx.save();
-        ctx.font = `500 28px "EB Garamond", serif`;
-        ctx.fillStyle = 'rgba(80,72,60,0.22)';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(y, Math.cos(la)*r, Math.sin(la)*r);
-        ctx.restore();
-      });
-
-      // radial spokes
-      const maxR = 80 + (years.length-1)*110 + 50;
-      ctx.strokeStyle = 'rgba(201,195,184,0.15)';
-      ctx.lineWidth = 0.5;
+      // radial spokes (draw first so rings sit on top)
+      const maxR = 80 + (years.length - 1) * 110 + 60;
       for (let i = 0; i < 16; i++) {
-        const a = (i/16) * Math.PI * 2;
+        const a = (i / 16) * Math.PI * 2;
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(a)*maxR, Math.sin(a)*maxR);
+        ctx.lineTo(Math.cos(a) * maxR, Math.sin(a) * maxR);
+        ctx.strokeStyle = 'rgba(180,172,158,0.13)';
+        ctx.lineWidth = 0.6;
         ctx.stroke();
       }
+
+      // concentric rings + badges
+      years.forEach((y, i) => {
+        const r = 80 + i * 110;
+        const col = yearColor(i);
+
+        // dashed ring in the year's colour
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        ctx.setLineDash([6, 5]);
+        ctx.strokeStyle = col + '60'; // ~38 % opacity
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+
+        // pill badge at 12 o'clock (top of ring)
+        pillBadge(String(y), 0, -r, col);
+      });
     }
 
     function drawEdges() {
@@ -1064,14 +1114,22 @@
           ctx.fill();
         }
 
-        // circle
+        // year-ring outline (thin, colour matches the ring)
+        const yRingCol = yearColor(node.ring);
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, radius + 2.5, 0, Math.PI * 2);
+        ctx.strokeStyle = rgba(yRingCol, alpha * 0.55);
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // circle fill
         ctx.beginPath();
         ctx.arc(node.x, node.y, radius, 0, Math.PI*2);
         ctx.fillStyle = rgba(color, alpha);
         ctx.fill();
 
         if (isSel) {
-          ctx.strokeStyle = '#2c2a26';
+          ctx.strokeStyle = '#1a1816';
           ctx.lineWidth = 2;
           ctx.stroke();
         } else if (isHov && v) {
