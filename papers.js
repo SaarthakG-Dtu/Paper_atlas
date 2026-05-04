@@ -472,6 +472,21 @@ const PAPERS = [
     desc: "Generates open-world game environments with interactive elements and characters.",
     cites: [],
   },
+  {
+    id: "leworldmodel_2026",
+    title: "LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from Pixels",
+    authors: "Maes, Le Lidec, Scieur, LeCun, Balestriero",
+    year: 2026,
+    venue: "Preprint",
+    category: "latent",
+    domain: "general",
+    training: "online",
+    arxiv: "https://arxiv.org/abs/2603.19312",
+    tags: ["JEPA", "pixels", "planning", "latent dynamics"],
+    desc: "Introduces a stable end-to-end JEPA-style world model trained directly from pixels with a simple two-term objective, competitive control performance, and much faster planning than large foundation-style world models.",
+    cites: ["planet_2019", "dreamer_2020", "td_mpc2_2024"],
+    status: "structured",
+  },
   // ══════ Auto-added 2026-05-04 ══════
   {
     id: "physically_native_world_models_a_hamilto_2026",

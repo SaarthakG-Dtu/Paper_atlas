@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>wm_papers</title>
-  <meta name="description" content="An interactive map of world model research. Browse papers by year, method, and domain." />
+  <title>World Models Atlas</title>
+  <meta name="description" content="A visual atlas of world model research, from foundational RL papers to newer generative world simulators." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -143,6 +143,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
     .stat-pill {
       font-family: var(--font-mono);
@@ -189,6 +190,78 @@
     #sidebar::-webkit-scrollbar { width: 0; }
 
     .fgroup {}
+    .sidebar-intro {
+      padding: 12px 12px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(245,235,231,0.55));
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+    .sidebar-intro h2 {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 500;
+      line-height: 1.05;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+    .sidebar-intro p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--ink2);
+      margin-bottom: 12px;
+    }
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ghost-btn {
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 7px 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .ghost-btn:hover {
+      border-color: var(--ink3);
+      background: var(--bg2);
+    }
+    .toggle-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--ink2);
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .toggle-row input {
+      accent-color: var(--accent);
+    }
+    .mini-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .mini-pill {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink2);
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
     .fgroup-title {
       font-family: var(--font-mono);
       font-size: 9.5px;
@@ -374,6 +447,16 @@
       transition: background 0.15s;
     }
     .d-link:hover { background: var(--ink2); }
+    .d-note {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--ink2);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
 
     .d-conns {
       margin-top: 22px;
@@ -462,6 +545,7 @@
       #legend { left: 14px; }
       #detail { width: 100%; right: -100%; }
       .brand-sub { display: none; }
+      .header-right { display: none; }
     }
   </style>
 </head>
@@ -470,8 +554,8 @@
   <!-- HEADER -->
   <header id="header">
     <div class="brand">
-      <span class="brand-name">wm_papers</span>
-      <span class="brand-sub">world model papers</span>
+      <span class="brand-name">World Models Atlas</span>
+      <span class="brand-sub">research map and reading graph</span>
     </div>
     <div class="header-sep"></div>
     <div id="search-box">
@@ -480,6 +564,7 @@
     </div>
     <div class="header-right">
       <div class="stat-pill"><strong id="vis-count">0</strong> / <span id="total-count">0</span></div>
+      <div class="stat-pill"><strong id="structured-count">0</strong> structured</div>
       <a class="gh-link" href="https://github.com/Shaswat2001/wm_papers" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
@@ -489,6 +574,18 @@
 
   <!-- SIDEBAR -->
   <aside id="sidebar">
+    <div class="sidebar-intro">
+      <h2>Map the field, then zoom in.</h2>
+      <p>Foundational latent-model RL papers, newer generative simulators, and exploratory additions now share one view. Use the structured-only toggle when you want the cleaner backbone first.</p>
+      <div class="toolbar-row">
+        <button id="clear-filters" class="ghost-btn" type="button">Clear filters</button>
+        <label class="toggle-row"><input id="structured-only" type="checkbox" /> Structured only</label>
+      </div>
+      <div class="mini-meta">
+        <span class="mini-pill" id="year-span">0 years</span>
+        <span class="mini-pill" id="edge-count">0 lineage links</span>
+      </div>
+    </div>
     <div class="fgroup">
       <div class="fgroup-title">Color by</div>
       <div class="color-toggle">
@@ -558,6 +655,22 @@
     const CAT_LABELS = { latent:'Latent', diffusion:'Diffusion', autoregressive:'Autoregressive', hybrid:'Hybrid', evaluation:'Evaluation', application:'Application' };
     const DOM_LABELS = { robotics:'Robotics', gaming:'Gaming', autonomous_driving:'Driving', video:'Video', general:'General', planning:'Planning' };
     const TRAIN_LABELS = { online:'Online', offline:'Offline', both:'Both' };
+    const CATEGORY_ANGLES = {
+      latent: -Math.PI / 2,
+      autoregressive: -0.18,
+      diffusion: Math.PI / 3,
+      hybrid: Math.PI * 0.92,
+      evaluation: Math.PI * 1.2,
+      application: Math.PI * 1.5,
+    };
+    const DOMAIN_OFFSETS = {
+      robotics: -0.34,
+      gaming: -0.16,
+      autonomous_driving: 0.16,
+      video: 0.3,
+      general: 0,
+      planning: 0.42,
+    };
 
     // ═══════════════════════════════════════════
     // STATE
@@ -568,6 +681,7 @@
     let filterTrain = new Set();
     let filterYear = new Set();
     let query = '';
+    let structuredOnly = false;
     let selected = null;
     let hovered = null;
 
@@ -590,6 +704,7 @@
       buildNodes();
       simulate();
       buildFilters();
+      updateSummary();
       updateLegend();
       bindEvents();
       updateCounts();
@@ -617,14 +732,16 @@
 
       nodes = PAPERS.map(p => {
         const ring = yIdx[p.year];
-        const angle = Math.random() * Math.PI * 2;
-        const r = 80 + ring * 110;
+        const baseAngle = CATEGORY_ANGLES[p.category] ?? 0;
+        const domainJitter = DOMAIN_OFFSETS[p.domain] ?? 0;
+        const angle = baseAngle + domainJitter + (Math.random() - 0.5) * 0.34;
+        const r = 80 + ring * 110 + (Math.random() - 0.5) * 38;
         return {
           ...p,
           x: Math.cos(angle) * r,
           y: Math.sin(angle) * r,
           vx: 0, vy: 0,
-          r: 5 + ((p.cites||[]).length) * 1.8,
+          r: 5 + ((p.cites||[]).length) * 1.8 + (isStructuredPaper(p) ? 0.9 : 0),
           ring,
         };
       });
@@ -694,10 +811,13 @@
     // FILTERS
     // ═══════════════════════════════════════════
     function buildFilters() {
-      const cats = [...new Set(PAPERS.map(p=>p.category))];
-      const doms = [...new Set(PAPERS.map(p=>p.domain))];
-      const trains = [...new Set(PAPERS.map(p=>p.training))];
-      const years = [...new Set(PAPERS.map(p=>p.year))].sort();
+      const catOrder = ['latent', 'autoregressive', 'diffusion', 'hybrid', 'evaluation', 'application'];
+      const domOrder = ['general', 'robotics', 'gaming', 'autonomous_driving', 'video', 'planning'];
+      const trainOrder = ['online', 'offline', 'both'];
+      const cats = catOrder.filter(c => PAPERS.some(p => p.category === c));
+      const doms = domOrder.filter(d => PAPERS.some(p => p.domain === d));
+      const trains = trainOrder.filter(t => PAPERS.some(p => p.training === t));
+      const years = [...new Set(PAPERS.map(p=>p.year))].sort((a, b) => b - a);
 
       const mkBtn = (container, label, color, count, onClick) => {
         const btn = document.createElement('button');
@@ -760,11 +880,26 @@
         query = e.target.value.toLowerCase();
         updateCounts();
       });
+
+      document.getElementById('structured-only').addEventListener('change', e => {
+        structuredOnly = e.target.checked;
+        updateCounts();
+        if (selected && !vis(selected)) closeDetail();
+      });
     }
 
     function toggleSet(s, v) { s.has(v) ? s.delete(v) : s.add(v); }
 
+    function isStructuredPaper(p) {
+      if (p.status === 'structured' || p.status === 'curated') return true;
+      const hasTags = (p.tags || []).length > 0;
+      const hasCompleteDesc = !!p.desc && !p.desc.endsWith('…');
+      const hasConcreteAuthors = !!p.authors && !/^Various$/i.test(p.authors);
+      return hasTags && hasCompleteDesc && hasConcreteAuthors;
+    }
+
     function vis(p) {
+      if (structuredOnly && !isStructuredPaper(p)) return false;
       if (filterCat.size && !filterCat.has(p.category)) return false;
       if (filterDom.size && !filterDom.has(p.domain)) return false;
       if (filterTrain.size && !filterTrain.has(p.training)) return false;
@@ -778,8 +913,16 @@
 
     function updateCounts() {
       const v = nodes.filter(n => vis(n)).length;
+      const sv = nodes.filter(n => vis(n) && isStructuredPaper(n)).length;
       document.getElementById('vis-count').textContent = v;
       document.getElementById('total-count').textContent = nodes.length;
+      document.getElementById('structured-count').textContent = sv;
+    }
+
+    function updateSummary() {
+      const years = [...new Set(PAPERS.map(p => p.year))].sort((a, b) => a - b);
+      document.getElementById('year-span').textContent = `${years.length} years`;
+      document.getElementById('edge-count').textContent = `${EDGES.length} lineage links`;
     }
 
     function updateLegend() {
@@ -868,6 +1011,7 @@
       });
 
       document.getElementById('detail-close').addEventListener('click', closeDetail);
+      document.getElementById('clear-filters').addEventListener('click', clearFilters);
     }
 
     function s2w(sx, sy) {
@@ -888,17 +1032,23 @@
       const cc = CAT_COLORS[paper.category]||'#888';
       const dc = DOM_COLORS[paper.domain]||'#888';
 
-      const infls = EDGES.filter(e=>e.source===paper.id).map(e=>nodeMap[e.target]).filter(Boolean);
-      const infBy = EDGES.filter(e=>e.target===paper.id).map(e=>nodeMap[e.source]).filter(Boolean);
+      const buildsOn = EDGES.filter(e=>e.source===paper.id).map(e=>nodeMap[e.target]).filter(Boolean);
+      const influenced = EDGES.filter(e=>e.target===paper.id).map(e=>nodeMap[e.source]).filter(Boolean);
+      const related = getRelatedPapers(paper);
+      const structured = isStructuredPaper(paper);
 
       let connHtml = '';
-      if (infls.length) {
-        connHtml += '<h4>Influences</h4>';
-        infls.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${p.year}</span></div>`);
+      if (buildsOn.length) {
+        connHtml += '<h4>Builds on</h4>';
+        buildsOn.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${p.year}</span></div>`);
       }
-      if (infBy.length) {
-        connHtml += '<h4>Influenced by</h4>';
-        infBy.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${p.year}</span></div>`);
+      if (influenced.length) {
+        connHtml += '<h4>Influenced later work</h4>';
+        influenced.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${p.year}</span></div>`);
+      }
+      if (related.length) {
+        connHtml += '<h4>Related track</h4>';
+        related.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${CAT_LABELS[p.category]||p.category} · ${p.year}</span></div>`);
       }
 
       body.innerHTML = `
@@ -909,7 +1059,9 @@
           <span class="d-badge" style="background:${cc}15;color:${cc};border:1px solid ${cc}30">${CAT_LABELS[paper.category]||paper.category}</span>
           <span class="d-badge" style="background:${dc}15;color:${dc};border:1px solid ${dc}30">${DOM_LABELS[paper.domain]||paper.domain}</span>
           <span class="d-badge" style="background:var(--bg2);color:var(--ink2);border:1px solid var(--border)">${TRAIN_LABELS[paper.training]||paper.training}</span>
+          <span class="d-badge" style="background:${structured ? 'rgba(39,174,96,0.12)' : 'rgba(196,93,62,0.12)'};color:${structured ? '#1e8449' : '#a8492f'};border:1px solid ${structured ? 'rgba(39,174,96,0.2)' : 'rgba(196,93,62,0.2)'}">${structured ? 'Structured metadata' : 'Exploratory entry'}</span>
         </div>
+        ${structured ? '' : '<div class="d-note">This entry came from the broader exploratory set. It is visible on the map, but its tags, lineage, and summary still need manual cleanup.</div>'}
         <p class="d-desc">${paper.desc||''}</p>
         <div class="d-tags">${(paper.tags||[]).map(t=>`<span class="d-tag">${t}</span>`).join('')}</div>
         ${paper.arxiv ? `<a class="d-link" href="${paper.arxiv}" target="_blank" rel="noopener">Read paper ↗</a>` : ''}
@@ -928,6 +1080,44 @@
     function closeDetail() {
       document.getElementById('detail').classList.remove('open');
       selected = null;
+    }
+
+    function clearFilters() {
+      filterCat.clear();
+      filterDom.clear();
+      filterTrain.clear();
+      filterYear.clear();
+      query = '';
+      structuredOnly = false;
+
+      document.getElementById('search-input').value = '';
+      document.getElementById('structured-only').checked = false;
+      document.querySelectorAll('.fbtn.active').forEach(btn => btn.classList.remove('active'));
+      updateCounts();
+    }
+
+    function getRelatedPapers(paper) {
+      const direct = new Set(
+        EDGES
+          .filter(e => e.source === paper.id || e.target === paper.id)
+          .flatMap(e => [e.source, e.target])
+      );
+      return nodes
+        .filter(candidate => candidate.id !== paper.id && !direct.has(candidate.id))
+        .map(candidate => {
+          let score = 0;
+          if (candidate.category === paper.category) score += 4;
+          if (candidate.domain === paper.domain) score += 3;
+          if (Math.abs(candidate.year - paper.year) <= 1) score += 2;
+          const overlap = (candidate.tags || []).filter(tag => (paper.tags || []).includes(tag)).length;
+          score += Math.min(overlap, 2);
+          if (!isStructuredPaper(candidate)) score -= 1;
+          return { candidate, score };
+        })
+        .filter(item => item.score >= 5)
+        .sort((a, b) => b.score - a.score || b.candidate.year - a.candidate.year)
+        .slice(0, 4)
+        .map(item => item.candidate);
     }
 
     // ═══════════════════════════════════════════
@@ -1077,7 +1267,8 @@
     }
 
     function drawNodes() {
-      nodes.forEach(node => {
+      const orderedNodes = [...nodes].sort((a, b) => Number(isStructuredPaper(a)) - Number(isStructuredPaper(b)));
+      orderedNodes.forEach(node => {
         const v = vis(node);
         const isSel = selected && selected.id === node.id;
         const isHov = hovered && hovered.id === node.id;
@@ -1097,6 +1288,8 @@
           alpha = 1;
         } else if (selected) {
           alpha = isConn ? 0.9 : 0.12;
+        } else if (!isStructuredPaper(node)) {
+          alpha = 0.52;
         } else {
           alpha = 0.88;
         }
