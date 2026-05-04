@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wm_papers</title>
+  <meta name="description" content="An interactive map of world model research. Browse papers by year, method, and domain." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════
+       DESIGN: warm editorial / research cartography
+       Palette: parchment whites, warm grays, ink,
+       terracotta accent, muted gem tones for categories
+    ═══════════════════════════════════════════ */
+    :root {
+      --bg: #faf8f4;
+      --bg2: #f3f0ea;
+      --surface: #fff;
+      --surface2: #edeae3;
+      --border: #ddd8ce;
+      --border2: #c9c3b8;
+      --ink: #2c2a26;
+      --ink2: #6b665c;
+      --ink3: #9e9889;
+      --accent: #c45d3e;
+      --accent2: #a8492f;
+      --accent-light: #f5ebe7;
+
+      --c-latent: #3a7ca5;
+      --c-diffusion: #c45d3e;
+      --c-autoregressive: #5a8a5e;
+      --c-hybrid: #b5873a;
+
+      --d-robotics: #c45d3e;
+      --d-gaming: #3a7ca5;
+      --d-driving: #b5873a;
+      --d-video: #8b5ca0;
+      --d-general: #6b665c;
+      --d-planning: #5a8a5e;
+
+      --font-display: 'EB Garamond', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+      --shadow-sm: 0 1px 3px rgba(44,42,38,0.06);
+      --shadow-md: 0 4px 16px rgba(44,42,38,0.08);
+      --shadow-lg: 0 8px 32px rgba(44,42,38,0.12);
+
+      --radius: 8px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── HEADER BAR ─── */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 56px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--ink3);
+      letter-spacing: 0.3px;
+    }
+
+    .header-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    #search-box {
+      flex: 1;
+      max-width: 340px;
+      position: relative;
+    }
+    #search-input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      background: var(--bg2);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    #search-input:focus {
+      background: var(--surface);
+      border-color: var(--border2);
+      box-shadow: var(--shadow-sm);
+    }
+    #search-input::placeholder { color: var(--ink3); }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink3);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stat-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink2);
+      background: var(--bg2);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .stat-pill strong { color: var(--ink); }
+
+    .gh-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--ink2);
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .gh-link:hover { border-color: var(--ink3); color: var(--ink); }
+    .gh-link svg { width: 14px; height: 14px; fill: currentColor; }
+
+    /* ─── SIDEBAR FILTERS ─── */
+    #sidebar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 208px;
+      height: calc(100vh - 56px);
+      z-index: 90;
+      padding: 16px 14px;
+      overflow-y: auto;
+      background: rgba(250,248,244,0.85);
+      backdrop-filter: blur(8px);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #sidebar::-webkit-scrollbar { width: 0; }
+
+    .fgroup {}
+    .fgroup-title {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ink3);
+      margin-bottom: 6px;
+      padding-left: 2px;
+    }
+
+    .color-toggle {
+      display: flex;
+      background: var(--bg2);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .color-toggle button {
+      flex: 1;
+      padding: 5px 0;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--ink3);
+      font-family: var(--font-body);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .color-toggle button.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .fbtn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+      padding: 5px 8px;
+      margin-bottom: 2px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--ink2);
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all 0.12s;
+      text-align: left;
+    }
+    .fbtn:hover { background: var(--bg2); color: var(--ink); }
+    .fbtn.active { background: var(--accent-light); color: var(--accent2); }
+    .fbtn .swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .fbtn .count {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink3);
+    }
+
+    /* ─── CANVAS ─── */
+    #graph-canvas {
+      position: fixed;
+      top: 56px;
+      left: 208px;
+      width: calc(100% - 208px);
+      height: calc(100vh - 56px);
+      z-index: 1;
+      cursor: grab;
+    }
+    #graph-canvas:active { cursor: grabbing; }
+
+    /* ─── DETAIL PANEL ─── */
+    #detail {
+      position: fixed;
+      top: 56px;
+      right: -420px;
+      width: 400px;
+      height: calc(100vh - 56px);
+      z-index: 200;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      padding: 28px 24px;
+      overflow-y: auto;
+      transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #detail.open { right: 0; }
+    #detail::-webkit-scrollbar { width: 4px; }
+    #detail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .d-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--ink3);
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+    }
+    .d-close:hover { border-color: var(--ink3); color: var(--ink); }
+
+    .d-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+    .d-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+    .d-authors {
+      font-size: 14px;
+      color: var(--ink2);
+      margin-bottom: 14px;
+    }
+    .d-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .d-badge {
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    .d-desc {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .d-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 18px;
+    }
+    .d-tag {
+      padding: 2px 8px;
+      background: var(--bg2);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink2);
+    }
+    .d-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      background: var(--ink);
+      border-radius: 6px;
+      color: var(--bg);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .d-link:hover { background: var(--ink2); }
+
+    .d-conns {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .d-conns h4 {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--ink3);
+      margin-bottom: 8px;
+    }
+    .d-conn {
+      padding: 8px 10px;
+      margin-bottom: 3px;
+      border-radius: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.1s;
+      color: var(--ink);
+    }
+    .d-conn:hover { background: var(--bg2); }
+    .d-conn span { color: var(--ink3); font-size: 12px; }
+
+    /* ─── LEGEND (bottom-left) ─── */
+    #legend {
+      position: fixed;
+      bottom: 14px;
+      left: 222px;
+      z-index: 80;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      display: flex;
+      gap: 14px;
+      font-size: 11px;
+      color: var(--ink2);
+      box-shadow: var(--shadow-sm);
+    }
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .leg-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+    }
+
+    /* ─── HINT ─── */
+    #hint {
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      z-index: 80;
+      font-size: 11px;
+      color: var(--ink3);
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      transition: opacity 0.4s;
+    }
+    #hint.gone { opacity: 0; pointer-events: none; }
+    #hint kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      margin: 0 1px;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      #sidebar { display: none; }
+      #graph-canvas { left: 0; width: 100%; }
+      #legend { left: 14px; }
+      #detail { width: 100%; right: -100%; }
+      .brand-sub { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="brand">
+      <span class="brand-name">wm_papers</span>
+      <span class="brand-sub">world model papers</span>
+    </div>
+    <div class="header-sep"></div>
+    <div id="search-box">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search-input" type="text" placeholder="Search papers, authors, tags…" autocomplete="off" spellcheck="false" />
+    </div>
+    <div class="header-right">
+      <div class="stat-pill"><strong id="vis-count">0</strong> / <span id="total-count">0</span></div>
+      <a class="gh-link" href="https://github.com/Shaswat2001/wm_papers" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="fgroup">
+      <div class="fgroup-title">Color by</div>
+      <div class="color-toggle">
+        <button class="active" data-mode="category">Method</button>
+        <button data-mode="domain">Domain</button>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fgroup-title">Method</div>
+      <div id="f-category"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fgroup-title">Domain</div>
+      <div id="f-domain"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fgroup-title">Training</div>
+      <div id="f-training"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fgroup-title">Year</div>
+      <div id="f-year"></div>
+    </div>
+  </aside>
+
+  <!-- CANVAS -->
+  <canvas id="graph-canvas"></canvas>
+
+  <!-- LEGEND -->
+  <div id="legend"></div>
+
+  <!-- DETAIL -->
+  <div id="detail">
+    <button class="d-close" id="detail-close">✕</button>
+    <div id="detail-body"></div>
+  </div>
+
+  <!-- HINT -->
+  <div id="hint">
+    Drag to pan · Scroll to zoom · Click a node
+  </div>
+
+  <script src="papers.js"></script>
+  <script>
+  (function() {
+    "use strict";
+
+    // ═══════════════════════════════════════════
+    // CONFIG
+    // ═══════════════════════════════════════════
+    const CAT_COLORS = {
+      latent: '#3a7ca5',
+      diffusion: '#c45d3e',
+      autoregressive: '#5a8a5e',
+      hybrid: '#b5873a',
+      evaluation: '#8b5ca0',
+      application: '#6b665c',
+    };
+    const DOM_COLORS = {
+      robotics: '#c45d3e',
+      gaming: '#3a7ca5',
+      autonomous_driving: '#b5873a',
+      video: '#8b5ca0',
+      general: '#6b665c',
+      planning: '#5a8a5e',
+    };
+    const CAT_LABELS = { latent:'Latent', diffusion:'Diffusion', autoregressive:'Autoregressive', hybrid:'Hybrid', evaluation:'Evaluation', application:'Application' };
+    const DOM_LABELS = { robotics:'Robotics', gaming:'Gaming', autonomous_driving:'Driving', video:'Video', general:'General', planning:'Planning' };
+    const TRAIN_LABELS = { online:'Online', offline:'Offline', both:'Both' };
+
+    // ═══════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════
+    let colorMode = 'category';
+    let filterCat = new Set();
+    let filterDom = new Set();
+    let filterTrain = new Set();
+    let filterYear = new Set();
+    let query = '';
+    let selected = null;
+    let hovered = null;
+
+    let nodes = [];
+    let nodeMap = {};
+
+    let canvas, ctx, W, H;
+    let cx = 0, cy = 0, zoom = 1;
+    let dragging = false, dStart = {x:0,y:0}, cStart = {x:0,y:0};
+
+    // ═══════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════
+    function init() {
+      canvas = document.getElementById('graph-canvas');
+      ctx = canvas.getContext('2d');
+      resize();
+      window.addEventListener('resize', resize);
+
+      buildNodes();
+      simulate();
+      buildFilters();
+      updateLegend();
+      bindEvents();
+      updateCounts();
+
+      setTimeout(() => document.getElementById('hint').classList.add('gone'), 6000);
+      requestAnimationFrame(render);
+    }
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      W = rect.width;
+      H = rect.height;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // ═══════════════════════════════════════════
+    // GRAPH LAYOUT
+    // ═══════════════════════════════════════════
+    function buildNodes() {
+      const years = [...new Set(PAPERS.map(p => p.year))].sort();
+      const yIdx = {}; years.forEach((y,i) => yIdx[y] = i);
+
+      nodes = PAPERS.map(p => {
+        const ring = yIdx[p.year];
+        const angle = Math.random() * Math.PI * 2;
+        const r = 80 + ring * 110;
+        return {
+          ...p,
+          x: Math.cos(angle) * r,
+          y: Math.sin(angle) * r,
+          vx: 0, vy: 0,
+          r: 5 + ((p.cites||[]).length) * 1.8,
+          ring,
+        };
+      });
+      nodeMap = {};
+      nodes.forEach(n => nodeMap[n.id] = n);
+    }
+
+    function simulate() {
+      const repK = 2500;
+      const springK = 0.012;
+      const springLen = 130;
+      const damp = 0.88;
+
+      for (let iter = 0; iter < 280; iter++) {
+        // repulsion
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i+1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            let dx = b.x - a.x, dy = b.y - a.y;
+            let d2 = dx*dx + dy*dy || 1;
+            let f = repK / d2;
+            let dist = Math.sqrt(d2);
+            let fx = (dx/dist)*f, fy = (dy/dist)*f;
+            a.vx -= fx; a.vy -= fy;
+            b.vx += fx; b.vy += fy;
+          }
+        }
+        // springs
+        EDGES.forEach(e => {
+          const s = nodeMap[e.source], t = nodeMap[e.target];
+          if (!s || !t) return;
+          let dx = t.x - s.x, dy = t.y - s.y;
+          let dist = Math.sqrt(dx*dx + dy*dy) || 1;
+          let f = (dist - springLen) * springK;
+          let fx = (dx/dist)*f, fy = (dy/dist)*f;
+          s.vx += fx; s.vy += fy;
+          t.vx -= fx; t.vy -= fy;
+        });
+        // ring pull
+        nodes.forEach(n => {
+          const tgt = 80 + n.ring * 110;
+          const cur = Math.sqrt(n.x*n.x + n.y*n.y) || 1;
+          const diff = (tgt - cur) * 0.04;
+          n.vx += (n.x/cur) * diff;
+          n.vy += (n.y/cur) * diff;
+        });
+        // center pull
+        nodes.forEach(n => {
+          n.vx -= n.x * 0.0008;
+          n.vy -= n.y * 0.0008;
+          n.vx *= damp;
+          n.vy *= damp;
+          n.x += n.vx;
+          n.y += n.vy;
+        });
+      }
+
+      // center camera
+      const ax = nodes.reduce((s,n) => s+n.x, 0) / nodes.length;
+      const ay = nodes.reduce((s,n) => s+n.y, 0) / nodes.length;
+      cx = ax; cy = ay;
+      zoom = Math.min(W, H) / 1600;
+      if (zoom < 0.3) zoom = 0.3;
+    }
+
+    // ═══════════════════════════════════════════
+    // FILTERS
+    // ═══════════════════════════════════════════
+    function buildFilters() {
+      const cats = [...new Set(PAPERS.map(p=>p.category))];
+      const doms = [...new Set(PAPERS.map(p=>p.domain))];
+      const trains = [...new Set(PAPERS.map(p=>p.training))];
+      const years = [...new Set(PAPERS.map(p=>p.year))].sort();
+
+      const mkBtn = (container, label, color, count, onClick) => {
+        const btn = document.createElement('button');
+        btn.className = 'fbtn';
+        btn.innerHTML = (color ? `<span class="swatch" style="background:${color}"></span>` : '') +
+          `${label}<span class="count">${count}</span>`;
+        btn.addEventListener('click', onClick);
+        container.appendChild(btn);
+        return btn;
+      };
+
+      // Category
+      const cC = document.getElementById('f-category');
+      cats.forEach(c => {
+        const cnt = PAPERS.filter(p=>p.category===c).length;
+        const btn = mkBtn(cC, CAT_LABELS[c]||c, CAT_COLORS[c], cnt, () => {
+          toggleSet(filterCat, c); btn.classList.toggle('active'); updateCounts();
+        });
+      });
+
+      // Domain
+      const dC = document.getElementById('f-domain');
+      doms.forEach(d => {
+        const cnt = PAPERS.filter(p=>p.domain===d).length;
+        const btn = mkBtn(dC, DOM_LABELS[d]||d, DOM_COLORS[d], cnt, () => {
+          toggleSet(filterDom, d); btn.classList.toggle('active'); updateCounts();
+        });
+      });
+
+      // Training
+      const tC = document.getElementById('f-training');
+      trains.forEach(t => {
+        const cnt = PAPERS.filter(p=>p.training===t).length;
+        const btn = mkBtn(tC, TRAIN_LABELS[t]||t, null, cnt, () => {
+          toggleSet(filterTrain, t); btn.classList.toggle('active'); updateCounts();
+        });
+      });
+
+      // Year
+      const yC = document.getElementById('f-year');
+      years.forEach(y => {
+        const cnt = PAPERS.filter(p=>p.year===y).length;
+        const btn = mkBtn(yC, String(y), null, cnt, () => {
+          toggleSet(filterYear, y); btn.classList.toggle('active'); updateCounts();
+        });
+      });
+
+      // Color toggle
+      document.querySelectorAll('.color-toggle button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.color-toggle button').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          colorMode = btn.dataset.mode;
+          updateLegend();
+        });
+      });
+
+      // Search
+      document.getElementById('search-input').addEventListener('input', e => {
+        query = e.target.value.toLowerCase();
+        updateCounts();
+      });
+    }
+
+    function toggleSet(s, v) { s.has(v) ? s.delete(v) : s.add(v); }
+
+    function vis(p) {
+      if (filterCat.size && !filterCat.has(p.category)) return false;
+      if (filterDom.size && !filterDom.has(p.domain)) return false;
+      if (filterTrain.size && !filterTrain.has(p.training)) return false;
+      if (filterYear.size && !filterYear.has(p.year)) return false;
+      if (query) {
+        const h = `${p.title} ${p.authors} ${(p.tags||[]).join(' ')} ${p.category} ${p.domain} ${p.desc||''}`.toLowerCase();
+        if (!h.includes(query)) return false;
+      }
+      return true;
+    }
+
+    function updateCounts() {
+      const v = nodes.filter(n => vis(n)).length;
+      document.getElementById('vis-count').textContent = v;
+      document.getElementById('total-count').textContent = nodes.length;
+    }
+
+    function updateLegend() {
+      const el = document.getElementById('legend');
+      const colors = colorMode === 'category' ? CAT_COLORS : DOM_COLORS;
+      const labels = colorMode === 'category' ? CAT_LABELS : DOM_LABELS;
+      el.innerHTML = '';
+      Object.entries(colors).forEach(([k,v]) => {
+        if (!PAPERS.some(p => (colorMode==='category' ? p.category : p.domain) === k)) return;
+        const d = document.createElement('div');
+        d.className = 'leg-item';
+        d.innerHTML = `<span class="leg-dot" style="background:${v}"></span>${labels[k]||k}`;
+        el.appendChild(d);
+      });
+    }
+
+    // ═══════════════════════════════════════════
+    // INTERACTIONS
+    // ═══════════════════════════════════════════
+    function bindEvents() {
+      canvas.addEventListener('mousedown', e => {
+        dragging = true;
+        dStart = {x:e.clientX, y:e.clientY};
+        cStart = {x:cx, y:cy};
+      });
+      canvas.addEventListener('mousemove', e => {
+        if (dragging) {
+          cx = cStart.x - (e.clientX - dStart.x) / zoom;
+          cy = cStart.y - (e.clientY - dStart.y) / zoom;
+        }
+        const wp = s2w(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
+        hovered = null;
+        for (let i = nodes.length-1; i >= 0; i--) {
+          if (!vis(nodes[i])) continue;
+          const dx = wp.x - nodes[i].x, dy = wp.y - nodes[i].y;
+          if (dx*dx + dy*dy < (nodes[i].r+4)*(nodes[i].r+4)) { hovered = nodes[i]; break; }
+        }
+        canvas.style.cursor = hovered ? 'pointer' : (dragging ? 'grabbing' : 'grab');
+      });
+      canvas.addEventListener('mouseup', e => {
+        if (dragging) {
+          const m = Math.abs(e.clientX - dStart.x) + Math.abs(e.clientY - dStart.y);
+          if (m < 5 && hovered) openDetail(hovered);
+          else if (m < 5 && !hovered) closeDetail();
+        }
+        dragging = false;
+      });
+      canvas.addEventListener('wheel', e => {
+        e.preventDefault();
+        const f = e.deltaY > 0 ? 0.92 : 1.08;
+        zoom = Math.max(0.12, Math.min(6, zoom * f));
+      }, {passive:false});
+
+      // touch
+      let lastDist = 0;
+      canvas.addEventListener('touchstart', e => {
+        if (e.touches.length === 1) {
+          dragging = true;
+          dStart = {x:e.touches[0].clientX, y:e.touches[0].clientY};
+          cStart = {x:cx, y:cy};
+        } else if (e.touches.length === 2) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          lastDist = Math.sqrt(dx*dx+dy*dy);
+        }
+      });
+      canvas.addEventListener('touchmove', e => {
+        e.preventDefault();
+        if (e.touches.length === 1 && dragging) {
+          cx = cStart.x - (e.touches[0].clientX - dStart.x) / zoom;
+          cy = cStart.y - (e.touches[0].clientY - dStart.y) / zoom;
+        } else if (e.touches.length === 2) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const d = Math.sqrt(dx*dx+dy*dy);
+          zoom = Math.max(0.12, Math.min(6, zoom * d / lastDist));
+          lastDist = d;
+        }
+      }, {passive:false});
+      canvas.addEventListener('touchend', e => {
+        if (e.touches.length === 0 && dragging) {
+          // tap detection
+          if (hovered) openDetail(hovered);
+          dragging = false;
+        }
+      });
+
+      document.getElementById('detail-close').addEventListener('click', closeDetail);
+    }
+
+    function s2w(sx, sy) {
+      return { x: (sx - W/2)/zoom + cx, y: (sy - H/2)/zoom + cy };
+    }
+    function w2s(wx, wy) {
+      return { x: (wx - cx)*zoom + W/2, y: (wy - cy)*zoom + H/2 };
+    }
+
+    // ═══════════════════════════════════════════
+    // DETAIL PANEL
+    // ═══════════════════════════════════════════
+    function openDetail(paper) {
+      selected = paper;
+      const panel = document.getElementById('detail');
+      const body = document.getElementById('detail-body');
+
+      const cc = CAT_COLORS[paper.category]||'#888';
+      const dc = DOM_COLORS[paper.domain]||'#888';
+
+      const infls = EDGES.filter(e=>e.source===paper.id).map(e=>nodeMap[e.target]).filter(Boolean);
+      const infBy = EDGES.filter(e=>e.target===paper.id).map(e=>nodeMap[e.source]).filter(Boolean);
+
+      let connHtml = '';
+      if (infls.length) {
+        connHtml += '<h4>Influences</h4>';
+        infls.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${p.year}</span></div>`);
+      }
+      if (infBy.length) {
+        connHtml += '<h4>Influenced by</h4>';
+        infBy.forEach(p => connHtml += `<div class="d-conn" data-id="${p.id}">${p.title} <span>${p.year}</span></div>`);
+      }
+
+      body.innerHTML = `
+        <div class="d-eyebrow">${paper.year} · ${paper.venue||''}</div>
+        <h2 class="d-title">${paper.title}</h2>
+        <div class="d-authors">${paper.authors}</div>
+        <div class="d-badges">
+          <span class="d-badge" style="background:${cc}15;color:${cc};border:1px solid ${cc}30">${CAT_LABELS[paper.category]||paper.category}</span>
+          <span class="d-badge" style="background:${dc}15;color:${dc};border:1px solid ${dc}30">${DOM_LABELS[paper.domain]||paper.domain}</span>
+          <span class="d-badge" style="background:var(--bg2);color:var(--ink2);border:1px solid var(--border)">${TRAIN_LABELS[paper.training]||paper.training}</span>
+        </div>
+        <p class="d-desc">${paper.desc||''}</p>
+        <div class="d-tags">${(paper.tags||[]).map(t=>`<span class="d-tag">${t}</span>`).join('')}</div>
+        ${paper.arxiv ? `<a class="d-link" href="${paper.arxiv}" target="_blank" rel="noopener">Read paper ↗</a>` : ''}
+        <div class="d-conns">${connHtml}</div>
+      `;
+
+      body.querySelectorAll('.d-conn').forEach(el => {
+        el.addEventListener('click', () => {
+          const n = nodeMap[el.dataset.id];
+          if (n) openDetail(n);
+        });
+      });
+
+      panel.classList.add('open');
+    }
+    function closeDetail() {
+      document.getElementById('detail').classList.remove('open');
+      selected = null;
+    }
+
+    // ═══════════════════════════════════════════
+    // RENDER
+    // ═══════════════════════════════════════════
+    function render() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#faf8f4';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      ctx.translate(W/2, H/2);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-cx, -cy);
+
+      drawWeb();
+      drawEdges();
+      drawNodes();
+
+      ctx.restore();
+      requestAnimationFrame(render);
+    }
+
+    function drawWeb() {
+      const years = [...new Set(PAPERS.map(p=>p.year))].sort();
+
+      // concentric rings
+      years.forEach((y, i) => {
+        const r = 80 + i * 110;
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(201,195,184,0.35)';
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+
+        // year label
+        const la = -Math.PI/2 + i * 0.18;
+        ctx.save();
+        ctx.font = `500 28px "EB Garamond", serif`;
+        ctx.fillStyle = 'rgba(158,152,137,0.18)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(y, Math.cos(la)*r, Math.sin(la)*r);
+        ctx.restore();
+      });
+
+      // radial spokes
+      const maxR = 80 + (years.length-1)*110 + 50;
+      ctx.strokeStyle = 'rgba(201,195,184,0.15)';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < 16; i++) {
+        const a = (i/16) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(a)*maxR, Math.sin(a)*maxR);
+        ctx.stroke();
+      }
+    }
+
+    function drawEdges() {
+      EDGES.forEach(e => {
+        const s = nodeMap[e.source], t = nodeMap[e.target];
+        if (!s || !t) return;
+        const sv = vis(s), tv = vis(t);
+        if (!sv && !tv) return;
+
+        const hi = selected && (s.id === selected.id || t.id === selected.id);
+        const alpha = hi ? 0.55 : (sv && tv ? 0.12 : 0.03);
+
+        const mx = (s.x+t.x)/2, my = (s.y+t.y)/2;
+        const dx = t.x-s.x, dy = t.y-s.y;
+        const cpx = mx - dy*0.12, cpy = my + dx*0.12;
+
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.quadraticCurveTo(cpx, cpy, t.x, t.y);
+        ctx.strokeStyle = hi ? `rgba(196,93,62,${alpha})` : `rgba(107,102,92,${alpha})`;
+        ctx.lineWidth = hi ? 1.8 : 0.8;
+        ctx.stroke();
+
+        // arrowhead on highlighted
+        if (hi) {
+          const tt = 0.78;
+          const ax = (1-tt)*(1-tt)*s.x + 2*(1-tt)*tt*cpx + tt*tt*t.x;
+          const ay = (1-tt)*(1-tt)*s.y + 2*(1-tt)*tt*cpy + tt*tt*t.y;
+          const tax = 2*(1-tt)*(cpx-s.x) + 2*tt*(t.x-cpx);
+          const tay = 2*(1-tt)*(cpy-s.y) + 2*tt*(t.y-cpy);
+          const ang = Math.atan2(tay, tax);
+          ctx.beginPath();
+          ctx.moveTo(ax, ay);
+          ctx.lineTo(ax - 8*Math.cos(ang-0.4), ay - 8*Math.sin(ang-0.4));
+          ctx.moveTo(ax, ay);
+          ctx.lineTo(ax - 8*Math.cos(ang+0.4), ay - 8*Math.sin(ang+0.4));
+          ctx.stroke();
+        }
+      });
+    }
+
+    function drawNodes() {
+      nodes.forEach(node => {
+        const v = vis(node);
+        const isSel = selected && selected.id === node.id;
+        const isHov = hovered && hovered.id === node.id;
+        const isConn = selected && EDGES.some(e =>
+          (e.source === selected.id && e.target === node.id) ||
+          (e.target === selected.id && e.source === node.id)
+        );
+
+        const color = colorMode === 'category'
+          ? (CAT_COLORS[node.category]||'#888')
+          : (DOM_COLORS[node.domain]||'#888');
+
+        let alpha = v ? (isSel||isHov ? 1 : (selected ? (isConn ? 0.85 : 0.1) : 0.8)) : 0.04;
+        let radius = node.r * (isHov ? 1.35 : 1);
+
+        // glow
+        if ((isHov || isSel) && v) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, radius + 10, 0, Math.PI*2);
+          const g = ctx.createRadialGradient(node.x, node.y, radius, node.x, node.y, radius+10);
+          g.addColorStop(0, color + '30');
+          g.addColorStop(1, color + '00');
+          ctx.fillStyle = g;
+          ctx.fill();
+        }
+
+        // circle
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, radius, 0, Math.PI*2);
+        ctx.fillStyle = rgba(color, alpha);
+        ctx.fill();
+
+        if (isSel) {
+          ctx.strokeStyle = '#2c2a26';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        } else if (isHov && v) {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        // label
+        if ((isHov || isSel || (zoom > 1.0 && v)) && v) {
+          ctx.save();
+          const fs = Math.max(9, 11 / Math.max(zoom, 0.6));
+          ctx.font = `${isSel||isHov ? 500 : 400} ${fs}px "DM Sans", sans-serif`;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+
+          const label = node.title.length > 38 ? node.title.slice(0,37)+'…' : node.title;
+          const tx = node.x + radius + 7;
+          const ty = node.y;
+          const tw = ctx.measureText(label).width;
+
+          // bg
+          ctx.fillStyle = 'rgba(250,248,244,0.88)';
+          const pad = 3;
+          ctx.fillRect(tx-pad, ty-fs/2-pad, tw+pad*2, fs+pad*2);
+
+          ctx.fillStyle = isSel||isHov ? '#2c2a26' : 'rgba(44,42,38,0.6)';
+          ctx.fillText(label, tx, ty);
+          ctx.restore();
+        }
+      });
+    }
+
+    function rgba(hex, a) {
+      const r = parseInt(hex.slice(1,3),16);
+      const g = parseInt(hex.slice(3,5),16);
+      const b = parseInt(hex.slice(5,7),16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+
+    // ═══════════════════════════════════════════
+    // BOOT
+    // ═══════════════════════════════════════════
+    window.addEventListener('DOMContentLoaded', init);
+  })();
+  </script>
+</body>
+</html>
