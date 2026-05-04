@@ -456,7 +456,7 @@ const PAPERS = [
     arxiv: "https://wayve.ai/thinking/gaia2/",
     tags: ["driving", "scaling", "foundation model"],
     desc: "Scaled world model for autonomous driving with improved generalization.",
-    cites: [],
+    cites: ["gaia1_2024", "vista_2024", "cosmos_2024"],
   },
   {
     id: "gamegen_o_2025",
@@ -470,7 +470,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2501.08325",
     tags: ["game generation", "open-world", "interactive"],
     desc: "Generates open-world game environments with interactive elements and characters.",
-    cites: [],
+    cites: ["genie_2024", "genie2_2024", "oasis_2024"],
   },
   {
     id: "leworldmodel_2026",
@@ -537,12 +537,12 @@ const PAPERS = [
     year: 2026,
     venue: "Preprint",
     category: "hybrid",
-    domain: "autonomous_driving",
+    domain: "robotics",
     training: "online",
     arxiv: "https://arxiv.org/abs/2605.00080",
     tags: [],
     desc: "World models, which are predictive representations of how environments evolve under actions, have become a central component of robot learning. They support policy learning, planning, simulation, evaluation, data generat…",
-    cites: [],
+    cites: ["daydreamer_2022", "pwm_2024", "dreamgen_unlocking_generalization_in_rob_2025"],
   },
   {
     id: "flying_by_inference_active_inference_wor_2026",
@@ -598,7 +598,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.26848",
     tags: [],
     desc: "Robotic manipulation requires reasoning about future spatial-temporal interactions and geometric constraints, yet existing Vision-Language-Action (VLA) policies often leave predictive representation weakly coupled with a…",
-    cites: [],
+    cites: ["pwm_2024", "robodreamer_2024", "irasim_2024"],
   },
   {
     id: "lifting_embodied_world_models_for_planni_2026",
@@ -654,7 +654,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.22152",
     tags: [],
     desc: "Evaluating robotics policies across thousands of environments and thousands of tasks is infeasible with existing approaches. This motivates the need for a new methodology for scalable robotics policy evaluation. In this …",
-    cites: [],
+    cites: ["pwm_2024", "irasim_2024", "robowm_bench_a_benchmark_for_evaluating_2026"],
   },
   {
     id: "hi_wm_human_in_the_world_model_for_scala_2026",
@@ -668,7 +668,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.21741",
     tags: [],
     desc: "Post-training is essential for turning pretrained generalist robot policies into reliable task-specific controllers, but existing human-in-the-loop pipelines remain tied to physical execution: each correction requires ro…",
-    cites: [],
+    cites: ["daydreamer_2022", "dreamgen_unlocking_generalization_in_rob_2025", "dworldeval_scalable_robotic_policy_evalu_2026"],
   },
   {
     id: "worldmark_a_unified_benchmark_suite_for_2026",
@@ -682,7 +682,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.21686",
     tags: [],
     desc: "Interactive video generation models such as Genie, YUME, HY-World, and Matrix-Game are advancing rapidly, yet every model is evaluated on its own benchmark with private scenes and trajectories, making fair cross-model co…",
-    cites: [],
+    cites: ["genie_2024", "matrix_game_interactive_world_foundation_2025", "live_long_horizon_interactive_video_worl_2026"],
   },
   {
     id: "x_cache_cross_chunk_block_caching_for_fe_2026",
@@ -696,7 +696,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.20289",
     tags: [],
     desc: "Real-time world simulation is becoming a key infrastructure for scalable evaluation and online reinforcement learning of autonomous driving systems. Recent driving world models built on autoregressive video diffusion ach…",
-    cites: [],
+    cites: ["epona_autoregressive_diffusion_world_mod_2025", "gaia2_2025", "vista_2024"],
   },
   {
     id: "cortex_2_0_grounding_world_models_in_rea_2026",
@@ -752,7 +752,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.19683",
     tags: [],
     desc: "World models derived from large-scale video generative pre-training have emerged as a promising paradigm for generalist robot policy learning. However, standard approaches often focus on high-fidelity RGB video predictio…",
-    cites: [],
+    cites: ["pwm_2024", "dreamgen_unlocking_generalization_in_rob_2025", "abot_physworld_interactive_world_foundat_2026"],
   },
   {
     id: "safety_critical_contextual_control_via_o_2026",
@@ -808,7 +808,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.18564",
     tags: [],
     desc: "Video world models have achieved remarkable success in simulating environmental dynamics in response to actions by users or agents. They are modeled as action-conditioned video generation models that take historical fram…",
-    cites: [],
+    cites: ["relic_interactive_video_world_model_with_2025", "solaris_building_a_multiplayer_video_wor_2026", "live_long_horizon_interactive_video_worl_2026"],
   },
   {
     id: "sonata_a_hybrid_world_model_for_inertial_2026",
@@ -920,7 +920,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.23376",
     tags: [],
     desc: "Video-based world models offer a powerful paradigm for embodied simulation and planning, yet state-of-the-art models often generate physically implausible manipulations - such as object penetration and anti-gravity motio…",
-    cites: [],
+    cites: ["pwm_2024", "robodreamer_2024", "dreamgen_unlocking_generalization_in_rob_2025"],
   },
   {
     id: "adapower_specializing_world_foundation_m_2025",
@@ -934,7 +934,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2512.03538",
     tags: [],
     desc: "World Foundation Models (WFMs) offer remarkable visual dynamics simulation capabilities, yet their application to precise robotic control remains limited by the gap between generative realism and control-oriented precisi…",
-    cites: [],
+    cites: ["pwm_2024", "robodreamer_2024", "ctrlworld_2024"],
   },
   {
     id: "cosmos_surg_dvrk_world_foundation_model_2025",
@@ -962,7 +962,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2506.18701",
     tags: [],
     desc: "We introduce Matrix-Game, an interactive world foundation model for controllable game world generation. Matrix-Game is trained using a two-stage pipeline that first performs large-scale unlabeled pretraining for environm…",
-    cites: [],
+    cites: ["genie_2024", "genie2_2024", "oasis_2024"],
   },
   {
     id: "cosmos_drive_dreams_scalable_synthetic_d_2025",
@@ -1088,7 +1088,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.07145",
     tags: [],
     desc: "Recent generative video world models aim to simulate visual environment evolution, allowing an observer to interactively explore the scene via camera control. However, they implicitly assume that the world only evolves w…",
-    cites: [],
+    cites: ["relic_interactive_video_world_model_with_2025", "video_world_models_with_long_term_spatia_2025", "out_of_sight_out_of_mind_evaluating_stat_2026"],
   },
   {
     id: "solaris_building_a_multiplayer_video_wor_2026",
@@ -1158,7 +1158,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.03747",
     tags: [],
     desc: "Autoregressive video world models predict future visual observations conditioned on actions. While effective over short horizons, these models often struggle with long-horizon generation, as small prediction errors accum…",
-    cites: [],
+    cites: ["relic_interactive_video_world_model_with_2025", "statespacediffuser_bringing_long_context_2025", "long_context_state_space_video_world_mod_2025"],
   },
   {
     id: "versecrafter_dynamic_realistic_video_wor_2026",
@@ -1186,7 +1186,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2601.01528",
     tags: [],
     desc: "Video generation models, as one form of world models, have emerged as one of the most exciting frontiers in AI, promising agents the ability to imagine the future by modeling the temporal evolution of complex scenes. In …",
-    cites: [],
+    cites: ["gaia1_2024", "gaia2_2025", "epona_autoregressive_diffusion_world_mod_2025"],
   },
   {
     id: "longvie_2_multimodal_controllable_ultra_2025",
@@ -1214,7 +1214,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2512.04040",
     tags: [],
     desc: "A truly interactive world model requires three key ingredients: real-time long-horizon streaming, consistent spatial memory, and precise user control. However, most existing approaches address only one of these aspects i…",
-    cites: [],
+    cites: ["sora_2024", "genie_2024", "long_context_state_space_video_world_mod_2025"],
   },
   {
     id: "worldpack_compressed_memory_improves_spa_2025",
@@ -1228,7 +1228,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2512.02473",
     tags: [],
     desc: "Video world models have attracted significant attention for their ability to produce high-fidelity future visual observations conditioned on past observations and navigation actions. Temporally- and spatially-consistent,…",
-    cites: [],
+    cites: ["genie_2024", "oasis_2024", "video_world_models_with_long_term_spatia_2025"],
   },
   {
     id: "target_bench_can_video_world_models_achi_2025",
@@ -1256,7 +1256,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2507.19468",
     tags: [],
     desc: "We present DINO-world, a powerful generalist video world model trained to predict future frames in the latent space of DINOv2. By leveraging a pre-trained image encoder and training a future predictor on a large-scale un…",
-    cites: [],
+    cites: ["gaia1_2024", "vista_2024", "cosmos_2024"],
   },
   {
     id: "video_world_models_with_long_term_spatia_2025",
@@ -1270,7 +1270,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2506.05284",
     tags: [],
     desc: "Emerging world models autoregressively generate video frames in response to actions, such as camera movements and text prompts, among other control signals. Due to limited temporal context window sizes, these models ofte…",
-    cites: [],
+    cites: ["genie_2024", "oasis_2024", "sora_2024"],
   },
   {
     id: "long_context_state_space_video_world_mod_2025",
@@ -1284,7 +1284,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2505.20171",
     tags: [],
     desc: "Video diffusion models have recently shown promise for world modeling through autoregressive frame prediction conditioned on actions. However, they struggle to maintain long-term memory due to the high computational cost…",
-    cites: [],
+    cites: ["diamond_2024", "sora_2024", "unisim_2023"],
   },
   {
     id: "dreamgen_unlocking_generalization_in_rob_2025",
@@ -1298,7 +1298,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2505.12705",
     tags: [],
     desc: "We introduce DreamGen, a simple yet highly effective 4-stage pipeline for training robot policies that generalize across behaviors and environments through neural trajectories - synthetic robot data generated from video …",
-    cites: [],
+    cites: ["daydreamer_2022", "pwm_2024", "robodreamer_2024"],
   },
   {
     id: "horizon_imagination_efficient_on_policy_2026",
@@ -1312,7 +1312,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.08032",
     tags: [],
     desc: "We study diffusion-based world models for reinforcement learning, which offer high generative fidelity but face critical efficiency challenges in control. Current methods either require heavyweight models at inference or…",
-    cites: [],
+    cites: ["dreamer_2020", "dreamerv3_2023", "diamond_2024"],
   },
   {
     id: "epona_autoregressive_diffusion_world_mod_2025",
@@ -1326,7 +1326,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2506.24113",
     tags: [],
     desc: "Diffusion models have demonstrated exceptional visual quality in video generation, making them promising for autonomous driving world modeling. However, existing video diffusion-based world models struggle with flexible-…",
-    cites: [],
+    cites: ["gaia1_2024", "vista_2024", "cosmos_2024"],
   },
   {
     id: "statespacediffuser_bringing_long_context_2025",
@@ -1340,7 +1340,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2505.22246",
     tags: [],
     desc: "World models have recently gained prominence for action-conditioned visual prediction in complex environments. However, relying on only a few recent observations causes them to lose long-term context. Consequently, withi…",
-    cites: [],
+    cites: ["diamond_2024", "sora_2024", "unisim_2023"],
   },
   {
     id: "hierarchical_planning_with_latent_world_2026",
@@ -1354,7 +1354,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.03208",
     tags: [],
     desc: "Model predictive control (MPC) with learned world models has emerged as a promising paradigm for embodied control, particularly for its ability to generalize zero-shot when deployed in new environments. However, learned …",
-    cites: [],
+    cites: ["td_mpc_2022", "td_mpc2_2024", "pwm_2024"],
   },
   {
     id: "dial_decoupling_intent_and_action_via_la_2026",
@@ -1368,7 +1368,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.29844",
     tags: [],
     desc: "The development of Vision-Language-Action (VLA) models has been significantly accelerated by pre-trained Vision-Language Models (VLMs). However, most existing end-to-end VLAs treat the VLM primarily as a multimodal encod…",
-    cites: [],
+    cites: ["dreamgen_unlocking_generalization_in_rob_2025", "unit_toward_a_unified_physical_language_2026", "hierarchical_planning_with_latent_world_2026"],
   },
   {
     id: "dreamerad_efficient_reinforcement_learni_2026",
@@ -1382,7 +1382,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.24587",
     tags: [],
     desc: "We introduce DreamerAD, the first latent world model framework that enables efficient reinforcement learning for autonomous driving by compressing diffusion sampling from 100 steps to 1 - achieving 80x speedup while main…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "gaia1_2024"],
   },
   {
     id: "thinkjepa_empowering_latent_world_models_2026",
@@ -1396,7 +1396,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.22281",
     tags: [],
     desc: "Recent progress in latent world models (e.g., V-JEPA2) has shown promising capability in forecasting future world states from video observations. Nevertheless, dense prediction from a short observation window limits temp…",
-    cites: [],
+    cites: ["leworldmodel_2026", "back_to_the_features_dino_as_a_foundatio_2025", "dreamerv3_2023"],
   },
   {
     id: "latent_world_models_for_automated_drivin_2026",
@@ -1452,7 +1452,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.08719",
     tags: [],
     desc: "Recent years have seen remarkable progress in autonomous driving, yet generalization to long-tail and open-world scenarios remains a major bottleneck for large-scale deployment. To address this challenge, some works use …",
-    cites: [],
+    cites: ["gaia2_2025", "dreamerad_efficient_reinforcement_learni_2026", "epona_autoregressive_diffusion_world_mod_2025"],
   },
   {
     id: "worldmap_bootstrapping_vision_language_n_2026",
