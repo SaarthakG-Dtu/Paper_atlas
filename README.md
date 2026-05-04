@@ -1,12 +1,20 @@
-# wm_papers
+# World Models Atlas
 
-An interactive graph of world model research papers. Browse by year, method, domain, and training paradigm.
+An interactive atlas of world model research papers. Browse the field by year, method, domain, training paradigm, and lineage.
 
 **Live →** [shaswat2001.github.io/wm_papers](https://shaswat2001.github.io/wm_papers)
 
 ## What's here
 
-A force-directed graph laid out in concentric year rings (2018–2025), with citation edges showing influence between papers. Filter by method (latent / diffusion / autoregressive), domain (robotics / gaming / driving / video), training type, or year. Search across titles, authors, and tags.
+A force-directed graph laid out in concentric year rings, now spanning `2018-2026`. The graph mixes a curated backbone of foundational papers with newer exploratory additions, and uses lineage edges to show which papers build on or belong to the same research thread.
+
+You can:
+
+- filter by method, domain, training type, or year
+- search across titles, authors, tags, and summaries
+- switch between color-by-method and color-by-domain
+- use `Structured only` to focus on the cleaner curated subset
+- open any paper to inspect its tags, lineage, and related-track suggestions
 
 ## Paper taxonomy
 
@@ -15,6 +23,7 @@ A force-directed graph laid out in concentric year rings (2018–2025), with cit
 | Latent | RSSM, MuZero-style — learning dynamics in a learned latent space |
 | Diffusion | Diffusion-based frame or trajectory prediction |
 | Autoregressive | Transformer / token-based next-frame prediction |
+| Hybrid | Mixed or cross-paradigm world modeling approaches |
 
 | Domain | Examples |
 |--------|---------|
@@ -41,9 +50,33 @@ Edit `papers.js` — add an entry to the `PAPERS` array:
   arxiv: "https://arxiv.org/abs/...",
   tags: ["tag1", "tag2"],
   desc: "One-line description.",
-  cites: ["other_paper_id"],    // papers this one influenced
+  cites: ["other_paper_id"],    // papers this work builds on / should connect to
+  status: "structured",         // optional: mark curated entries explicitly
 }
 ```
+
+Notes:
+
+- `cites` is used as a graph-link field, not a strict bibliography dump.
+- For recent auto-added papers, it is normal to add lineage links manually after ingestion.
+- The UI treats papers with stronger metadata more prominently; sparse auto-added entries still appear, but can be hidden with `Structured only`.
+
+## Auto-ingest workflow
+
+The repo includes [`scripts/fetch_papers.py`](/Users/shaswatgarg/Documents/Projects/wm_papers/scripts/fetch_papers.py), which pulls recent arXiv papers matching world-model-related queries and appends them to `papers.js`.
+
+What it does well:
+
+- catches recent preprints that match the title/query heuristics
+- guesses method, domain, and training mode
+- avoids re-adding papers already present by title or arXiv ID
+
+What still needs manual cleanup:
+
+- adding tags
+- writing better summaries
+- fixing occasional misclassified domains or categories
+- adding `cites` lineage links so the graph is actually useful
 
 Push to `main` and GitHub Actions will deploy automatically.
 
@@ -58,7 +91,8 @@ python3 -m http.server 8000
 
 ## Future
 
-- Google Scholar auto-scraper (GitHub Action + serpapi)
-- Embedding-based semantic clustering
-- BibTeX export per paper
-- Community PRs for new papers
+- split the dataset into clearly curated vs auto-ingested sections
+- add a timeline/list view alongside the graph
+- improve automatic tagging and linkage suggestions
+- add BibTeX export per paper
+- support community PRs for new papers and metadata cleanup

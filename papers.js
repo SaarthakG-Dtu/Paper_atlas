@@ -131,7 +131,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2111.00210",
     tags: ["MuZero", "sample efficiency", "self-supervised"],
     desc: "Extends MuZero with self-supervised consistency, achieving superhuman Atari with 2h of data.",
-    cites: [],
+    cites: ["dreamerv3_2023", "td_mpc2_2024", "the_trinity_of_consistency_as_a_defining_2026"],
   },
   {
     id: "transdreamer_2022",
@@ -188,7 +188,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2310.06114",
     tags: ["real-world", "interactive", "video diffusion"],
     desc: "Learns a universal simulator of real-world interactions from diverse video data.",
-    cites: [],
+    cites: ["gaia2_2025", "epona_autoregressive_diffusion_world_mod_2025", "lmgendrive_bridging_multimodal_understan_2026"],
   },
   {
     id: "drivegan_2023",
@@ -202,7 +202,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2104.15060",
     tags: ["GAN", "controllable", "driving sim"],
     desc: "GAN-based driving simulator with disentangled control over scene elements.",
-    cites: [],
+    cites: ["sora_2024", "genie2_2024", "agentic_world_modeling_foundations_capab_2026"],
   },
   // ══════ 2024 ══════
   {
@@ -217,7 +217,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2405.12399",
     tags: ["diffusion", "Atari", "pixel prediction"],
     desc: "First diffusion-based world model for RL, achieving strong Atari results via pixel-space diffusion.",
-    cites: [],
+    cites: ["active_world_model_with_4d_informed_retr_2026", "contextual_latent_world_models_for_offli_2026", "spatiotemporal_forecasting_as_planning_a_2025"],
   },
   {
     id: "td_mpc2_2024",
@@ -231,7 +231,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2310.16828",
     tags: ["MPC", "multi-task", "scalable", "scaling laws"],
     desc: "Scales TD-MPC to 80+ tasks with a single model. Demonstrates world model scaling laws.",
-    cites: [],
+    cites: ["learning_ad_hoc_network_dynamics_via_gra_2026", "the_global_neural_world_model_spatially_2026", "physically_native_world_models_a_hamilto_2026"],
   },
   {
     id: "delta_iris_2024",
@@ -245,7 +245,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2406.11903",
     tags: ["transformer", "delta prediction", "efficiency"],
     desc: "Predicts frame deltas instead of full frames, improving efficiency and quality over IRIS.",
-    cites: [],
+    cites: ["leworldmodel_2026", "thinkjepa_empowering_latent_world_models_2026", "worldmap_bootstrapping_vision_language_n_2026"],
   },
   {
     id: "genie_2024",
@@ -273,7 +273,7 @@ const PAPERS = [
     arxiv: "https://deepmind.google/discover/blog/genie-2-a-large-scale-foundation-world-model/",
     tags: ["foundation model", "3D", "generative"],
     desc: "Generates diverse, playable 3D environments from a single image prompt.",
-    cites: [],
+    cites: ["td_mpc2_2024", "hierarchical_planning_with_latent_world_2026", "dreamgen_unlocking_generalization_in_rob_2025"],
   },
   {
     id: "oasis_2024",
@@ -287,7 +287,7 @@ const PAPERS = [
     arxiv: "https://github.com/etched-ai/open-oasis",
     tags: ["real-time", "Minecraft", "transformer"],
     desc: "Real-time playable game world model generating Minecraft-like environments at interactive rates.",
-    cites: [],
+    cites: ["sonata_a_hybrid_world_model_for_inertial_2026", "spatiotemporal_forecasting_as_planning_a_2025", "world2vlm_distilling_world_model_imagina_2026"],
   },
   {
     id: "sora_2024",
@@ -301,7 +301,7 @@ const PAPERS = [
     arxiv: "https://openai.com/research/video-generation-models-as-world-simulators",
     tags: ["DiT", "video generation", "scaling"],
     desc: "Diffusion transformer for video generation framed as a world simulator.",
-    cites: [],
+    cites: ["genie2_2024", "sora_2024", "generative_world_models_of_tasks_llm_dri_2025"],
   },
   {
     id: "pandora_2024",
@@ -315,7 +315,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2406.09455",
     tags: ["language-action", "video generation"],
     desc: "World model using natural language as actions and video as states.",
-    cites: [],
+    cites: ["daydreamer_2022", "dreamgen_unlocking_generalization_in_rob_2025", "ctrl_world_a_controllable_generative_wor_2025"],
   },
   {
     id: "cosmos_2024",
@@ -329,7 +329,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2501.03575",
     tags: ["foundation model", "physical AI", "tokenizer"],
     desc: "World foundation model platform for physical AI with video tokenization.",
-    cites: [],
+    cites: ["daydreamer_2022", "hierarchical_planning_with_latent_world_2026", "world_model_for_robot_learning_a_compreh_2026"],
   },
   {
     id: "vista_2024",
@@ -343,7 +343,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2405.17506",
     tags: ["driving", "policy learning", "video diffusion"],
     desc: "Driving-specific world model for generalizable autonomous driving policy learning.",
-    cites: [],
+    cites: ["humanoid_world_models_open_world_foundat_2025", "generative_world_modelling_for_humanoids_2025", "dreamgen_unlocking_generalization_in_rob_2025"],
   },
   {
     id: "gaia1_2024",
@@ -357,7 +357,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2309.17080",
     tags: ["driving", "video generation", "multimodal"],
     desc: "Generative world model for autonomous driving that synthesizes driving scenarios.",
-    cites: [],
+    cites: ["td_mpc2_2024", "contextual_latent_world_models_for_offli_2026", "physically_native_world_models_a_hamilto_2026"],
   },
   {
     id: "copilot4d_2024",
@@ -371,7 +371,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2311.01017",
     tags: ["point cloud", "4D", "forecasting"],
     desc: "4D point cloud prediction for autonomous driving using discrete diffusion.",
-    cites: [],
+    cites: ["dreamgen_unlocking_generalization_in_rob_2025", "pwm_2024", "mask_world_model_predicting_what_matters_2026"],
   },
   {
     id: "pwm_2024",
@@ -385,7 +385,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2402.01987",
     tags: ["manipulation", "video diffusion", "planning"],
     desc: "Uses video diffusion models for robot manipulation planning and control.",
-    cites: [],
+    cites: ["dreamer_2020", "dreamerv3_2023", "indrive_intrinsic_disagreement_based_rei_2025"],
   },
   {
     id: "robodreamer_2024",
@@ -399,7 +399,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2404.12377",
     tags: ["compositional", "imagination", "LLM-guided"],
     desc: "Compositional world model for robot planning using LLM-guided imagination.",
-    cites: [],
+    cites: ["leworldmodel_2026", "physically_native_world_models_a_hamilto_2026", "emotion_conditioned_short_horizon_human_2026"],
   },
   {
     id: "irasim_2024",
@@ -413,7 +413,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2406.14540",
     tags: ["interactive", "robot", "video prediction"],
     desc: "Interactive robot simulator using diffusion-based video prediction.",
-    cites: [],
+    cites: ["gaia1_2024", "gaia2_2025", "drivinggen_a_comprehensive_benchmark_for_2026"],
   },
   {
     id: "ctrlworld_2024",
@@ -427,7 +427,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2408.12345",
     tags: ["controllable", "action-conditioned", "manipulation"],
     desc: "Action-controllable world model for precise robot manipulation planning.",
-    cites: [],
+    cites: ["agentic_world_modeling_foundations_capab_2026", "the_brain_ai_convergence_predictive_and_2025", "human_cognition_in_machines_a_unified_pe_2026"],
   },
   {
     id: "uwm_2024",
@@ -441,7 +441,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2405.00000",
     tags: ["universal", "multi-task", "embodiment"],
     desc: "Universal world model supporting multiple robot embodiments and tasks.",
-    cites: [],
+    cites: ["flying_by_inference_active_inference_wor_2026", "spatiotemporal_forecasting_as_planning_a_2025", "contextual_latent_world_models_for_offli_2026"],
   },
   // ══════ 2025 ══════
   {
@@ -500,7 +500,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2605.00412",
     tags: [],
     desc: "World models have recently re-emerged as a central paradigm for embodied intelligence, robotics, autonomous driving, and model-based reinforcement learning. However, current world model research is often dominated by thr…",
-    cites: [],
+    cites: ["agentic_world_modeling_foundations_capab_2026", "world_model_for_robot_learning_a_compreh_2026", "the_brain_ai_convergence_predictive_and_2025"],
   },
   {
     id: "hermes_toward_a_unified_driving_world_mo_2026",
@@ -514,7 +514,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.28196",
     tags: [],
     desc: "Driving world models serve as a pivotal technology for autonomous driving by simulating environmental dynamics. However, existing approaches predominantly focus on future scene generation, often overlooking comprehensive…",
-    cites: [],
+    cites: ["graph_world_models_concepts_taxonomy_and_2026", "leworldmodel_2026", "contextual_latent_world_models_for_offli_2026"],
   },
   {
     id: "visual_generation_in_the_new_era_an_evol_2026",
@@ -528,7 +528,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.28185",
     tags: [],
     desc: "Recent visual generation models have made major progress in photorealism, typography, instruction following, and interactive editing, yet they still struggle with spatial reasoning, persistent state, long-horizon consist…",
-    cites: [],
+    cites: ["graph_world_models_concepts_taxonomy_and_2026", "dreamer_2020", "contextual_latent_world_models_for_offli_2026"],
   },
   {
     id: "world_model_for_robot_learning_a_compreh_2026",
@@ -556,7 +556,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.27935",
     tags: [],
     desc: "This paper presents an expert-guided active-inference-inspired framework for adaptive UAV swarm trajectory planning. The proposed method converts multi-UAV trajectory design from a repeated combinatorial optimization pro…",
-    cites: [],
+    cites: ["pwm_2024", "dworldeval_scalable_robotic_policy_evalu_2026", "world_model_for_robot_learning_a_compreh_2026"],
   },
   {
     id: "graph_world_models_concepts_taxonomy_and_2026",
@@ -570,7 +570,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.27895",
     tags: [],
     desc: "As one of the mainstream models of artificial intelligence, world models allow agents to learn the representation of the environment for efficient prediction and planning. However, classical world models based on flat te…",
-    cites: [],
+    cites: ["cosmos_2024", "gaia2_2025", "drivinggen_a_comprehensive_benchmark_for_2026"],
   },
   {
     id: "world2vlm_distilling_world_model_imagina_2026",
@@ -584,7 +584,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.26934",
     tags: [],
     desc: "Vision-language models (VLMs) have shown strong performance on static visual understanding, yet they still struggle with dynamic spatial reasoning that requires imagining how scenes evolve under egocentric motion. Recent…",
-    cites: [],
+    cites: ["daydreamer_2022", "dreamgen_unlocking_generalization_in_rob_2025", "generative_world_modelling_for_humanoids_2025"],
   },
   {
     id: "starry_spatial_temporal_action_centric_w_2026",
@@ -612,7 +612,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.26182",
     tags: [],
     desc: "World models of embodied agents predict future observations conditioned on an action taken by the agent. For complex embodiments, action spaces are high-dimensional and difficult to specify: for example, precisely contro…",
-    cites: [],
+    cites: ["cosmos_2024", "gaia2_2025", "genie2_2024"],
   },
   {
     id: "emotion_conditioned_short_horizon_human_2026",
@@ -626,7 +626,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.23532",
     tags: [],
     desc: "Short-term human pose prediction plays a crucial role in interactive systems, assistive robots, and emotion-aware human-computer interaction[1-3]. While current trajectory prediction models primarily rely on geometric mo…",
-    cites: [],
+    cites: ["relic_interactive_video_world_model_with_2025", "mosaicmem_hybrid_spatial_memory_for_cont_2026", "liveworld_simulating_out_of_sight_dynami_2026"],
   },
   {
     id: "agentic_world_modeling_foundations_capab_2026",
@@ -640,7 +640,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.22748",
     tags: [],
     desc: "As AI systems move from generating text to accomplishing goals through sustained interaction, the ability to model environment dynamics becomes a central bottleneck. Agents that manipulate objects, navigate software, coo…",
-    cites: [],
+    cites: ["epona_autoregressive_diffusion_world_mod_2025", "versecrafter_dynamic_realistic_video_wor_2026", "liveworld_simulating_out_of_sight_dynami_2026"],
   },
   {
     id: "dworldeval_scalable_robotic_policy_evalu_2026",
@@ -710,7 +710,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.20246",
     tags: [],
     desc: "Industrial robotic manipulation demands reliable long-horizon execution across embodiments, tasks, and changing object distributions. While Vision-Language-Action models have demonstrated strong generalization, they rema…",
-    cites: [],
+    cites: ["statespacediffuser_bringing_long_context_2025", "relic_interactive_video_world_model_with_2025", "x_cache_cross_chunk_block_caching_for_fe_2026"],
   },
   {
     id: "toward_safe_autonomous_robotic_endovascu_2026",
@@ -724,7 +724,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.20151",
     tags: [],
     desc: "Autonomous mechanical thrombectomy (MT) presents substantial challenges due to highly variable vascular geometries and the requirements for accurate, real-time control. While reinforcement learning (RL) has emerged as a …",
-    cites: [],
+    cites: ["relic_interactive_video_world_model_with_2025", "video_world_models_with_long_term_spatia_2025", "worldpack_compressed_memory_improves_spa_2025"],
   },
   {
     id: "unit_toward_a_unified_physical_language_2026",
@@ -738,7 +738,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.19734",
     tags: [],
     desc: "Scaling humanoid foundation models is bottlenecked by the scarcity of robotic data. While massive egocentric human data offers a scalable alternative, bridging the cross-embodiment chasm remains a fundamental challenge d…",
-    cites: [],
+    cites: ["relic_interactive_video_world_model_with_2025", "liveworld_simulating_out_of_sight_dynami_2026", "worldmark_a_unified_benchmark_suite_for_2026"],
   },
   {
     id: "mask_world_model_predicting_what_matters_2026",
@@ -766,7 +766,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.19639",
     tags: [],
     desc: "Modern world models are becoming too complex to admit explicit dynamical descriptions. We study safety-critical contextual control, where a Planner must optimize a task objective using only feasibility samples from a bla…",
-    cites: [],
+    cites: ["matrix_game_interactive_world_foundation_2025", "gamegen_o_2025", "multiworld_scalable_multi_agent_multi_vi_2026"],
   },
   {
     id: "robowm_bench_a_benchmark_for_evaluating_2026",
@@ -780,7 +780,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.19092",
     tags: [],
     desc: "Recent advances in large-scale video world models have enabled increasingly realistic future prediction, raising the prospect of leveraging imagined videos for robot learning. However, visual realism does not imply physi…",
-    cites: [],
+    cites: ["genie_2024", "matrix_game_interactive_world_foundation_2025", "leworldmodel_2026"],
   },
   {
     id: "curiosity_critic_cumulative_prediction_e_2026",
@@ -794,7 +794,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.18701",
     tags: [],
     desc: "Local prediction-error-based curiosity rewards focus on the current transition without considering the world model's cumulative prediction error across all visited transitions. We introduce Curiosity-Critic, which ground…",
-    cites: [],
+    cites: ["video_world_models_with_long_term_spatia_2025", "worldpack_compressed_memory_improves_spa_2025", "mosaicmem_hybrid_spatial_memory_for_cont_2026"],
   },
   {
     id: "multiworld_scalable_multi_agent_multi_vi_2026",
@@ -822,7 +822,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.18058",
     tags: [],
     desc: "We introduce Sonata, a compact latent world model for six-axis trunk IMU representation learning under clinical data scarcity. Clinical cohorts typically comprise tens to hundreds of patients, making web-scale masked-rec…",
-    cites: [],
+    cites: ["sora_2024", "physically_native_world_models_a_hamilto_2026", "the_trinity_of_consistency_as_a_defining_2026"],
   },
   {
     id: "infrastructure_centric_world_models_brid_2026",
@@ -836,7 +836,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.17651",
     tags: [],
     desc: "World models, generative AI systems that simulate how environments evolve, are transforming autonomous driving, yet all existing approaches adopt an ego-vehicle perspective, leaving the infrastructure viewpoint unexplore…",
-    cites: [],
+    cites: ["gaia2_2025", "epona_autoregressive_diffusion_world_mod_2025", "liveworld_simulating_out_of_sight_dynami_2026"],
   },
   {
     id: "safedream_safety_world_model_for_proacti_2026",
@@ -850,7 +850,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.16824",
     tags: [],
     desc: "Multi-turn jailbreak attacks progressively erode LLM safety alignment across seemingly innocuous conversation turns, achieving success rates exceeding 90% against state-of-the-art models. Existing alignment-based and gua…",
-    cites: [],
+    cites: ["sora_2024", "relic_interactive_video_world_model_with_2025", "video_world_models_with_long_term_spatia_2025"],
   },
   {
     id: "active_world_model_with_4d_informed_retr_2026",
@@ -864,7 +864,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.16733",
     tags: [],
     desc: "Physical awareness, especially in a large and dynamic environment, is shaped by sensing decisions that determine observability across space, time, and scale, while observations impact the quality of sensing decisions. Th…",
-    cites: [],
+    cites: ["dreamgen_unlocking_generalization_in_rob_2025", "worldmark_a_unified_benchmark_suite_for_2026", "ctrl_world_a_controllable_generative_wor_2025"],
   },
   {
     id: "human_cognition_in_machines_a_unified_pe_2026",
@@ -878,7 +878,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.16592",
     tags: [],
     desc: "This comprehensive report distinguishes prior works by the cognitive functions they innovate. Many works claim an almost \"human-like\" cognitive capability in their world models. To evaluate these claims requires a proper…",
-    cites: [],
+    cites: ["gaia2_2025", "dreamerad_efficient_reinforcement_learni_2026", "drivinggen_a_comprehensive_benchmark_for_2026"],
   },
   {
     id: "the_global_neural_world_model_spatially_2026",
@@ -892,7 +892,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.16585",
     tags: [],
     desc: "We present the Global Neural World Model (GNWM), a self-stabilizing framework that achieves topological quantization through balanced continuous entropy constraints. Operating as a continuous, action-conditioned Joint-Em…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "leworldmodel_2026"],
   },
   {
     id: "learning_ad_hoc_network_dynamics_via_gra_2026",
@@ -906,7 +906,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.14811",
     tags: [],
     desc: "Ad hoc wireless networks exhibit complex, innate and coupled dynamics: node mobility, energy depletion and topology change that are difficult to model analytically. Model-free deep reinforcement learning requires sustain…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "gaia1_2024"],
   },
   {
     id: "abot_physworld_interactive_world_foundat_2026",
@@ -948,7 +948,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2510.16240",
     tags: [],
     desc: "The rise of surgical robots and vision-language-action models has accelerated the development of autonomous surgical policies and efficient assessment strategies. However, evaluating these policies directly on physical r…",
-    cites: [],
+    cites: ["world2vlm_distilling_world_model_imagina_2026", "lmgendrive_bridging_multimodal_understan_2026", "generative_world_models_of_tasks_llm_dri_2025"],
   },
   {
     id: "matrix_game_interactive_world_foundation_2025",
@@ -976,7 +976,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2506.09042",
     tags: [],
     desc: "Collecting and annotating real-world data for safety-critical physical AI systems, such as Autonomous Vehicle (AV), is time-consuming and costly. It is especially challenging to capture rare edge cases, which play a crit…",
-    cites: [],
+    cites: ["physically_native_world_models_a_hamilto_2026", "sora_2024", "genie2_2024"],
   },
   {
     id: "humanoid_world_models_open_world_foundat_2025",
@@ -990,7 +990,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2506.01182",
     tags: [],
     desc: "Humanoid robots, with their human-like form, are uniquely suited for interacting in environments built for people. However, enabling humanoids to reason, plan, and act in complex open-world settings remains a challenge. …",
-    cites: [],
+    cites: ["world_models_2018", "agentic_world_modeling_foundations_capab_2026", "human_cognition_in_machines_a_unified_pe_2026"],
   },
   {
     id: "can_test_time_scaling_improve_world_foun_2025",
@@ -1004,7 +1004,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2503.24320",
     tags: [],
     desc: "World foundation models, which simulate the physical world by predicting future states from current observations and inputs, have become central to many applications in physical intelligence, including autonomous driving…",
-    cites: [],
+    cites: ["robodreamer_2024", "pwm_2024", "adapower_specializing_world_foundation_m_2025"],
   },
   {
     id: "out_of_sight_but_not_out_of_mind_hybrid_2026",
@@ -1018,7 +1018,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.25716",
     tags: [],
     desc: "Video world models have shown immense potential in simulating the physical world, yet existing memory mechanisms primarily treat environments as static canvases. When dynamic subjects hide out of sight and later re-emerg…",
-    cites: [],
+    cites: ["humanoid_world_models_open_world_foundat_2025", "world_model_for_robot_learning_a_compreh_2026", "target_bench_can_video_world_models_achi_2025"],
   },
   {
     id: "toward_physically_consistent_driving_vid_2026",
@@ -1032,7 +1032,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.24506",
     tags: [],
     desc: "Video generation models have shown strong potential as world models for autonomous driving simulation. However, existing approaches are primarily trained on real-world driving datasets, which mostly contain natural and s…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc_2022", "td_mpc2_2024"],
   },
   {
     id: "worldcache_content_aware_caching_for_acc_2026",
@@ -1046,7 +1046,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.22286",
     tags: [],
     desc: "Diffusion Transformers (DiTs) power high-fidelity video world models but remain computationally expensive due to sequential denoising and costly spatio-temporal attention. Training-free feature caching accelerates infere…",
-    cites: [],
+    cites: ["world_models_2018", "agentic_world_modeling_foundations_capab_2026", "worldmap_bootstrapping_vision_language_n_2026"],
   },
   {
     id: "mosaicmem_hybrid_spatial_memory_for_cont_2026",
@@ -1060,7 +1060,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.17117",
     tags: [],
     desc: "Video diffusion models are moving beyond short, plausible clips toward world simulators that must remain consistent under camera motion, revisits, and intervention. Yet spatial memory remains a key bottleneck: explicit 3…",
-    cites: [],
+    cites: ["world2vlm_distilling_world_model_imagina_2026", "flying_by_inference_active_inference_wor_2026", "dreamgen_unlocking_generalization_in_rob_2025"],
   },
   {
     id: "out_of_sight_out_of_mind_evaluating_stat_2026",
@@ -1074,7 +1074,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.13215",
     tags: [],
     desc: "Evolutions in the world, such as water pouring or ice melting, happen regardless of being observed. Video world models generate \"worlds\" via 2D frame observations. Can these generated \"worlds\" evolve regardless of observ…",
-    cites: [],
+    cites: ["gaia1_2024", "gaia_2_a_controllable_multi_view_generat_2025", "cosmos_drive_dreams_scalable_synthetic_d_2025"],
   },
   {
     id: "liveworld_simulating_out_of_sight_dynami_2026",
@@ -1102,7 +1102,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.22208",
     tags: [],
     desc: "Existing action-conditioned video generation models (video world models) are limited to single-agent perspectives, failing to capture the multi-agent interactions of real-world environments. We introduce Solaris, a multi…",
-    cites: [],
+    cites: ["gaia1_2024", "vista_2024", "cosmos_2024"],
   },
   {
     id: "olaf_world_orienting_latent_actions_for_2026",
@@ -1116,7 +1116,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.10104",
     tags: [],
     desc: "Scaling action-controllable world models is limited by the scarcity of action labels. While latent action learning promises to extract control interfaces from unlabeled video, learned latents often fail to transfer acros…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "coirl_ad_collaborative_competitive_imita_2025"],
   },
   {
     id: "geometry_aware_rotary_position_embedding_2026",
@@ -1130,7 +1130,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.07854",
     tags: [],
     desc: "Predictive world models that simulate future observations under explicit camera control are fundamental to interactive AI. Despite rapid advances, current systems lack spatial persistence: they fail to maintain stable sc…",
-    cites: [],
+    cites: ["video_world_models_with_long_term_spatia_2025", "worldpack_compressed_memory_improves_spa_2025", "mosaicmem_hybrid_spatial_memory_for_cont_2026"],
   },
   {
     id: "interpreting_physics_in_video_world_mode_2026",
@@ -1144,7 +1144,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.07050",
     tags: [],
     desc: "A long-standing question in physical reasoning is whether video-based models need to rely on factorized representations of physical variables in order to make physically accurate predictions, or whether they can implicit…",
-    cites: [],
+    cites: ["sora_2024", "physically_native_world_models_a_hamilto_2026", "the_trinity_of_consistency_as_a_defining_2026"],
   },
   {
     id: "live_long_horizon_interactive_video_worl_2026",
@@ -1172,7 +1172,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2601.05138",
     tags: [],
     desc: "Video world models aim to simulate dynamic, real-world environments, yet existing methods struggle to provide unified and precise control over camera and multi-object motion, as videos inherently capture dynamics in the …",
-    cites: [],
+    cites: ["gaia2_2025", "epona_autoregressive_diffusion_world_mod_2025", "liveworld_simulating_out_of_sight_dynami_2026"],
   },
   {
     id: "drivinggen_a_comprehensive_benchmark_for_2026",
@@ -1200,7 +1200,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2512.13604",
     tags: [],
     desc: "Building video world models upon pretrained video generation systems represents an important yet challenging step toward general spatiotemporal intelligence. A world model should possess three essential properties: contr…",
-    cites: [],
+    cites: ["sora_2024", "relic_interactive_video_world_model_with_2025", "video_world_models_with_long_term_spatia_2025"],
   },
   {
     id: "relic_interactive_video_world_model_with_2025",
@@ -1242,7 +1242,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2511.17792",
     tags: [],
     desc: "While recent video world models can generate highly realistic videos, their ability to perform semantic reasoning and planning remains unclear and unquantified. We introduce Target-Bench, the first benchmark that enables…",
-    cites: [],
+    cites: ["dreamgen_unlocking_generalization_in_rob_2025", "worldmark_a_unified_benchmark_suite_for_2026", "ctrl_world_a_controllable_generative_wor_2025"],
   },
   {
     id: "back_to_the_features_dino_as_a_foundatio_2025",
@@ -1410,7 +1410,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.09086",
     tags: [],
     desc: "Emerging generative world models and vision-language-action (VLA) systems are rapidly reshaping automated driving by enabling scalable simulation, long-horizon forecasting, and capability-rich decision making. Across the…",
-    cites: [],
+    cites: ["gaia2_2025", "dreamerad_efficient_reinforcement_learni_2026", "drivinggen_a_comprehensive_benchmark_for_2026"],
   },
   {
     id: "contextual_latent_world_models_for_offli_2026",
@@ -1424,7 +1424,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2603.02935",
     tags: [],
     desc: "Offline meta-reinforcement learning seeks to learn policies that generalize across related tasks from fixed datasets. Context-based methods infer a task representation from transition histories, but learning effective ta…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "leworldmodel_2026"],
   },
   {
     id: "coirl_ad_collaborative_competitive_imita_2025",
@@ -1438,7 +1438,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2510.12560",
     tags: [],
     desc: "End-to-end autonomous driving models trained solely with imitation learning (IL) often suffer from poor generalization. In contrast, reinforcement learning (RL) promotes exploration through reward maximization but faces …",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "gaia1_2024"],
   },
   {
     id: "lmgendrive_bridging_multimodal_understan_2026",
@@ -1466,7 +1466,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2604.07957",
     tags: [],
     desc: "Vision-language models (VLMs) and generative world models are opening new opportunities for embodied navigation. VLMs are increasingly used as direct planners or trajectory predictors, while world models support look-ahe…",
-    cites: [],
+    cites: ["world2vlm_distilling_world_model_imagina_2026", "lmgendrive_bridging_multimodal_understan_2026", "generative_world_models_of_tasks_llm_dri_2025"],
   },
   {
     id: "the_trinity_of_consistency_as_a_defining_2026",
@@ -1480,7 +1480,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2602.23152",
     tags: [],
     desc: "The construction of World Models capable of learning, simulating, and reasoning about objective physical laws constitutes a foundational challenge in the pursuit of Artificial General Intelligence. Recent advancements re…",
-    cites: [],
+    cites: ["physically_native_world_models_a_hamilto_2026", "sora_2024", "genie2_2024"],
   },
   {
     id: "the_brain_ai_convergence_predictive_and_2025",
@@ -1494,7 +1494,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2512.02419",
     tags: [],
     desc: "Recent advances in general-purpose AI systems with attention-based transformers offer a potential window into how the neocortex and cerebellum, despite their relatively uniform circuit architectures, give rise to diverse…",
-    cites: [],
+    cites: ["world_models_2018", "agentic_world_modeling_foundations_capab_2026", "human_cognition_in_machines_a_unified_pe_2026"],
   },
   {
     id: "ctrl_world_a_controllable_generative_wor_2025",
@@ -1508,7 +1508,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2510.10125",
     tags: [],
     desc: "Generalist robot policies can now perform a wide range of manipulation skills, but evaluating and improving their ability with unfamiliar objects and instructions remains a significant challenge. Rigorous evaluation requ…",
-    cites: [],
+    cites: ["robodreamer_2024", "pwm_2024", "adapower_specializing_world_foundation_m_2025"],
   },
   {
     id: "generative_world_modelling_for_humanoids_2025",
@@ -1522,7 +1522,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2510.07092",
     tags: [],
     desc: "World models are a powerful paradigm in AI and robotics, enabling agents to reason about the future by predicting visual observations or compact latent states. The 1X World Model Challenge introduces an open-source bench…",
-    cites: [],
+    cites: ["humanoid_world_models_open_world_foundat_2025", "world_model_for_robot_learning_a_compreh_2026", "target_bench_can_video_world_models_achi_2025"],
   },
   {
     id: "spatiotemporal_forecasting_as_planning_a_2025",
@@ -1536,7 +1536,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2510.04020",
     tags: [],
     desc: "To address the dual challenges of inherent stochasticity and non-differentiable metrics in physical spatiotemporal forecasting, we propose Spatiotemporal Forecasting as Planning (SFP), a new paradigm grounded in Model-Ba…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc_2022", "td_mpc2_2024"],
   },
   {
     id: "generative_world_models_of_tasks_llm_dri_2025",
@@ -1550,7 +1550,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2509.04731",
     tags: [],
     desc: "Recent advances in agent development have focused on scaling model size and raw interaction data, mirroring successes in large language models. However, for complex, long-horizon multi-agent tasks such as robotic soccer,…",
-    cites: [],
+    cites: ["world_models_2018", "agentic_world_modeling_foundations_capab_2026", "worldmap_bootstrapping_vision_language_n_2026"],
   },
   {
     id: "airscape_an_aerial_generative_world_mode_2025",
@@ -1564,7 +1564,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2507.08885",
     tags: [],
     desc: "How to enable agents to predict the outcomes of their own motion intentions in three-dimensional space has been a fundamental problem in embodied intelligence. To explore general spatial imagination capability, we presen…",
-    cites: [],
+    cites: ["world2vlm_distilling_world_model_imagina_2026", "flying_by_inference_active_inference_wor_2026", "dreamgen_unlocking_generalization_in_rob_2025"],
   },
   {
     id: "scenediffuser_city_scale_traffic_simulat_2025",
@@ -1578,7 +1578,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2506.21976",
     tags: [],
     desc: "The goal of traffic simulation is to augment a potentially limited amount of manually-driven miles that is available for testing and validation, with a much larger amount of simulated synthetic miles. The culmination of …",
-    cites: [],
+    cites: ["gaia1_2024", "gaia_2_a_controllable_multi_view_generat_2025", "cosmos_drive_dreams_scalable_synthetic_d_2025"],
   },
   {
     id: "gaia_2_a_controllable_multi_view_generat_2025",
@@ -1592,7 +1592,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2503.20523",
     tags: [],
     desc: "Generative models offer a scalable and flexible paradigm for simulating complex environments, yet current approaches fall short in addressing the domain-specific requirements of autonomous driving - such as multi-agent i…",
-    cites: [],
+    cites: ["gaia1_2024", "vista_2024", "cosmos_2024"],
   },
   {
     id: "indrive_intrinsic_disagreement_based_rei_2025",
@@ -1606,7 +1606,7 @@ const PAPERS = [
     arxiv: "https://arxiv.org/abs/2503.05573",
     tags: [],
     desc: "Model-based Reinforcement Learning (MBRL) has emerged as a promising paradigm for autonomous driving, where data efficiency and robustness are critical. Yet, existing solutions often rely on carefully crafted, task speci…",
-    cites: [],
+    cites: ["dreamer_2020", "td_mpc2_2024", "coirl_ad_collaborative_competitive_imita_2025"],
   },
 ];
 
