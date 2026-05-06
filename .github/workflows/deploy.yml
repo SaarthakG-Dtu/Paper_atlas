@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: "meta-inverse-pages"
   cancel-in-progress: false
 
 jobs:

@@ -20,34 +20,42 @@ from pathlib import Path
 # ti: = title field   cat: = arxiv category (cs.LG/cs.AI/eess.SP/physics.optics)
 # Pinning to these categories reduces unrelated arXiv false positives.
 QUERIES = [
-    'ti:"metasurface" AND ti:"inverse design" AND (cat:cs.LG OR cat:cs.AI OR cat:eess.SP OR cat:physics.optics)',
-    'ti:"inverse design" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP)',
-    'ti:"deep learning" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP OR cat:physics.optics)',
+    'ti:"metasurface" AND ti:"inverse design" AND (cat:cs.LG OR cat:eess.SP OR cat:physics.optics)',
+    'ti:"inverse design" AND ti:"metasurface" AND cat:eess.SP',
+    'ti:"pixelated metasurface" AND (cat:eess.SP OR cat:cs.LG)',
+    'ti:"binary PSO" AND ti:"metasurface" AND cat:eess.SP',
+    'ti:"particle swarm" AND ti:"metasurface" AND cat:eess.SP',
+    'ti:"deep learning" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP)',
     'ti:"neural network" AND ti:"metasurface" AND cat:eess.SP',
     'ti:"generative" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP)',
     'ti:"metasurface" AND ti:"optimization" AND (cat:eess.SP OR cat:physics.optics)',
-    'ti:"programmable metasurface" AND (cat:eess.SP OR cat:cs.LG)',
-    'ti:"reconfigurable metasurface" AND (cat:eess.SP OR cat:cs.LG)',
-    'ti:"intelligent metasurface" AND (cat:eess.SP OR cat:cs.AI)',
-    'ti:"microwave metasurface" AND ti:"design" AND cat:eess.SP',
+    'ti:"frequency selective surface" AND ti:"optimization" AND cat:eess.SP',
+    'ti:"frequency selective surface" AND ti:"deep learning" AND cat:eess.SP',
     'ti:"patch antenna" AND ti:"machine learning" AND cat:eess.SP',
-    'ti:"RIS" AND ti:"deep learning" AND (cat:eess.SP OR cat:cs.IT)',
+    'ti:"patch antenna" AND ti:"optimization" AND cat:eess.SP',
+    'ti:"surrogate" AND ti:"antenna" AND ti:"optimization" AND cat:eess.SP',
+    'ti:"ant colony" AND ti:"frequency selective" AND cat:eess.SP',
+    'ti:"reconfigurable intelligent surface" AND ti:"deep learning" AND (cat:eess.SP OR cat:cs.IT)',
+    'ti:"programmable metasurface" AND (cat:eess.SP OR cat:cs.LG)',
+    'ti:"coding metasurface" AND ti:"optimization" AND cat:eess.SP',
+    'ti:"absorber" AND ti:"metasurface" AND ti:"inverse design" AND cat:eess.SP',
 ]
 
 # At least one of these must appear in title+abstract for a paper to be included
 RELEVANCE_KEYWORDS = [
     "metasurface", "meta-surface", "metaatom", "meta-atom",
     "inverse design", "inverse problem",
-    "electromagnetic", "em simulation",
-    "unit cell", "subwavelength",
+    "frequency selective surface", "FSS",
+    "unit cell", "subwavelength", "pixel", "pixelated", "binary pattern",
+    "patch antenna", "microstrip antenna", "reflectarray",
+    "particle swarm", "binary PSO", "BPSO", "ant colony",
+    "surrogate model", "kriging", "gaussian process",
     "reconfigurable intelligent surface", "RIS",
     "beam steering", "beam forming",
-    "absorber", "absorbing",
-    "hologram", "holographic",
-    "patch antenna", "microstrip",
-    "bandpass filter", "bandstop",
-    "coding metasurface", "programmable",
-    "topology optimization",
+    "absorber", "bandpass filter", "bandstop filter",
+    "coding metasurface", "programmable metasurface",
+    "topology optimization", "direct binary search",
+    "electromagnetic", "EM simulation", "CST", "HFSS", "FDTD",
 ]
 
 DEFAULT_LOOKBACK_MONTHS = 18
@@ -61,40 +69,54 @@ def is_relevant(title: str, summary: str) -> bool:
 def categorize(title: str, summary: str):
     text = (title + " " + summary).lower()
 
-    # METHOD (category)
-    if any(w in text for w in ["diffusion model", "ddpm", "score-based", "flow matching", "gan", "vae", "generative adversarial", "variational autoencoder", "denoising"]):
+    # METHOD
+    if any(w in text for w in ["diffusion model","ddpm","score-based","flow matching",
+                                "gan","vae","variational autoencoder","generative adversarial",
+                                "denoising diffusion","normalizing flow","autoencoder"]):
         category = "generative"
-    elif any(w in text for w in ["deep learning", "neural network", "cnn", "transformer", "attention", "lstm", "mlp", "ann", "tandem"]):
+    elif any(w in text for w in ["deep learning","neural network","cnn","transformer",
+                                  "attention","lstm","mlp","ann","tandem","resnet",
+                                  "reinforcement learning","q-learning","reward","agent"]):
         category = "deep_learning"
-    elif any(w in text for w in ["adjoint", "gradient descent", "topology optim", "genetic algorithm", "particle swarm", "evolutionary", "simulated annealing", "bayesian optim"]):
+    elif any(w in text for w in ["particle swarm","pso","bpso","ant colony","aco",
+                                  "genetic algorithm","differential evolution","grey wolf",
+                                  "adjoint","topology optim","direct binary search",
+                                  "cma-es","wind driven","evolutionary","surrogate"]):
         category = "optimization"
-    elif any(w in text for w in ["analytical", "closed-form", "equivalent circuit", "transmission line", "coupled mode"]):
+    elif any(w in text for w in ["analytical","closed-form","equivalent circuit",
+                                  "transmission line","coupled mode","transfer matrix"]):
         category = "analytical"
     else:
         category = "hybrid"
 
-    # DOMAIN (application area)
-    if any(w in text for w in ["patch antenna", "microstrip", "antenna array", "aperture antenna"]):
+    # DOMAIN
+    if any(w in text for w in ["patch antenna","microstrip antenna","reflectarray",
+                                "aperture antenna","array antenna","vivaldi","monopole"]):
         domain = "antenna"
-    elif any(w in text for w in ["microwave", "millimeter wave", "mmwave", "mm-wave", "ghz", "radar", "ris", "reconfigurable intelligent"]):
-        domain = "microwave"
-    elif any(w in text for w in ["absorb", "perfect absorber", "wideband absorb", "narrowband absorb"]):
-        domain = "absorber"
-    elif any(w in text for w in ["hologram", "holograph", "lens", "flat lens", "metalens"]):
-        domain = "lens_hologram"
-    elif any(w in text for w in ["filter", "bandpass", "bandstop", "frequency selective"]):
+    elif any(w in text for w in ["frequency selective","fss","bandpass filter","bandstop filter",
+                                  "spatial filter","band-stop","band-pass"]):
         domain = "filter"
-    elif any(w in text for w in ["beam steer", "beam form", "beam shap", "beam split", "radiation pattern"]):
+    elif any(w in text for w in ["microwave","millimeter wave","mmwave","mm-wave",
+                                  "ghz","radar","ris","reconfigurable intelligent",
+                                  "rcs","cloak"]):
+        domain = "microwave"
+    elif any(w in text for w in ["absorb","perfect absorber","wideband absorb"]):
+        domain = "absorber"
+    elif any(w in text for w in ["hologram","holograph","lens","flat lens","metalens"]):
+        domain = "lens_hologram"
+    elif any(w in text for w in ["beam steer","beam form","beam shap","beam split",
+                                  "radiation pattern","phased array"]):
         domain = "beam_steering"
-    elif any(w in text for w in ["sensor", "sensing", "detect", "imaging"]):
+    elif any(w in text for w in ["sensor","sensing","detect","imaging","imager"]):
         domain = "sensing"
     else:
         domain = "general"
 
-    # DATA REGIME (training)
-    if any(w in text for w in ["reinforcement learning", "reward", "agent", "policy"]):
+    # DATA REGIME
+    if any(w in text for w in ["reinforcement learning","reward","agent","policy","q-learning"]):
         training = "reinforcement"
-    elif any(w in text for w in ["unsupervised", "self-supervised", "generative", "unlabeled", "autoencoder"]):
+    elif any(w in text for w in ["unsupervised","self-supervised","generative",
+                                  "unlabeled","autoencoder","vae","gan"]):
         training = "unsupervised"
     else:
         training = "supervised"

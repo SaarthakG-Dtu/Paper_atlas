@@ -1,39 +1,38 @@
-# Metasurface Inverse Design Atlas
+# Pixelated Metasurface Inverse Design Atlas
 
-An interactive atlas of inverse design papers for metasurfaces and electromagnetic structures. Browse by method, application, data regime, and lineage.
+An interactive graph atlas of inverse design methods for pixelated electromagnetic
+metasurfaces. Browse by method, application, data regime, and lineage.
 
 **Live ->** [saarthakg-dtu.github.io/Paper_atlas](https://saarthakg-dtu.github.io/Paper_atlas)
 
 ## What's here
 
-A force-directed graph laid out in concentric year rings (2018-2026). Curated backbone papers are connected by lineage edges showing research threads.
+A force-directed graph in concentric year rings (1995-2025). Curated backbone papers
+are connected by lineage edges showing research threads from foundational PSO/GA/ACO
+optimisation through to deep generative models.
 
-You can:
-- filter by **method**, **application domain**, data regime, or year
-- search across titles, authors, tags, and summaries
-- switch between color-by-method and color-by-application
-- use `Structured only` for the curated subset
-- click any node to inspect tags, lineage, and related papers
+Filter by **method**, **application**, data regime, or year. Click any node to inspect
+tags, lineage, and related papers. Use `Structured only` for the curated backbone.
 
 ## Taxonomy
 
 | Method | What it means |
 |--------|--------------|
-| Optimization | Adjoint, topology optimization, genetic/evolutionary algorithms |
-| Deep Learning | CNNs, transformers, tandem networks, ANNs |
-| Generative | GANs, VAEs, diffusion models |
-| Hybrid | Combinations of the above |
-| Analytical | Equivalent circuit, closed-form, coupled-mode theory |
+| Optimization | BPSO, ACO, GA, adjoint, topology optimisation, surrogate-assisted |
+| Deep Learning | CNN, tandem networks, transformers, ANN, reinforcement learning |
+| Generative | GAN, VAE, diffusion models, VAE-PSO hybrid |
+| Hybrid | Surrogate + NSGA-II, BPSO + CNN, VAE + PSO, physics-informed NN |
+| Analytical | Equivalent circuit, coupled-mode, closed-form FSS theory |
 
 | Application | Examples |
 |-------------|---------|
-| Microwave | RIS, mmWave beam control |
-| Antenna/Patch | Patch antenna, aperture arrays |
-| Absorber | Perfect absorbers, wideband absorbers |
-| Lens/Hologram | Metalens, flat optics, holographic metasurfaces |
-| Filter | FSS, bandpass/bandstop surfaces |
-| Beam Steering | Phased arrays, beam shaping |
-| Sensing | EM sensors, imaging |
+| FSS / Filter | MOLACO 3D-FSS, MVBPSO bandpass/bandstop, MC-cGAN |
+| Patch Antenna | MOTOL, surrogate Pareto, SVR reflectarray |
+| Microwave / RIS | BPSO checkerboard, microwave cloak, RIS beamforming |
+| Absorber | RL absorber, ACDL adaptive cascade |
+| Beam Steering | GAN metagrating, space-time coding |
+| Lens / Hologram | Topology opt metalens, hologram GAN |
+| Sensing | ML reprogrammable imager |
 
 ## Adding papers
 
@@ -46,9 +45,9 @@ Edit `papers.js`:
   authors: "Author et al.",
   year: 2025,
   venue: "Journal/Conference",
-  category: "deep_learning",    // optimization | deep_learning | generative | hybrid | analytical
-  domain: "microwave",          // microwave | antenna | absorber | lens_hologram | filter | beam_steering | sensing | general
-  training: "supervised",       // supervised | unsupervised | reinforcement
+  category: "optimization",   // optimization | deep_learning | generative | hybrid | analytical
+  domain: "filter",           // filter | antenna | microwave | absorber | beam_steering | lens_hologram | sensing | general
+  training: "supervised",     // supervised | unsupervised | reinforcement
   arxiv: "https://arxiv.org/abs/...",
   tags: ["tag1", "tag2"],
   desc: "One-line description.",
@@ -57,9 +56,15 @@ Edit `papers.js`:
 }
 ```
 
+## Auto-ingest
+
+`scripts/fetch_papers.py` pulls recent arXiv papers matching pixelated metasurface
+queries quarterly via GitHub Actions. Push to `main` to deploy automatically.
+
 ## Local dev
 
 ```bash
-open index.html   # or:
+open index.html
+# or:
 python3 -m http.server 8000
 ```

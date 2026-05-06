@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Metasurface Inverse Design Atlas</title>
-  <meta name="description" content="An interactive atlas of inverse design methods for metasurfaces - from classical optimizers to deep generative models." />
+  <title>Pixelated Metasurface Inverse Design Atlas</title>
+  <meta name="description" content="An interactive atlas of inverse design methods for pixelated metasurfaces - from binary PSO and ACO to CNN and generative models, covering antenna, FSS, and filter applications." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -558,7 +558,7 @@
   <header id="header">
     <div class="brand">
       <span class="brand-name">Metasurface Inverse Design Atlas</span>
-      <span class="brand-sub">methods, applications & lineage</span>
+      <span class="brand-sub">pixel optimisation · deep learning · generative</span>
     </div>
     <div class="header-sep"></div>
     <div id="search-box">
@@ -579,7 +579,7 @@
   <aside id="sidebar">
     <div class="sidebar-intro">
         <h2>Map inverse design, then zoom in.</h2>
-        <p>Optimization algorithms, deep learning methods, and generative models for metasurface inverse design - spanning microwave to optical domains. Use structured-only to see the curated backbone first.</p>
+        <p>Binary PSO, ACO, surrogate models, CNN, VAE, and GAN methods for pixelated metasurface inverse design - spanning patch antennas, FSS filters, absorbers, and programmable surfaces.</p>
       <div class="toolbar-row">
         <button id="clear-filters" class="ghost-btn" type="button">Clear filters</button>
         <label class="toggle-row"><input id="structured-only" type="checkbox" /> Structured only</label>
@@ -647,17 +647,17 @@
       analytical: '#7d3c98',
     };
     const DOM_COLORS = {
-      microwave: '#b03a2e',
-      antenna: '#1a5276',
-      absorber: '#ca6f1e',
-      lens_hologram: '#76448a',
-      filter: '#117a65',
+      filter: '#1a5276',
+      antenna: '#b03a2e',
+      microwave: '#ca6f1e',
+      absorber: '#76448a',
       beam_steering: '#c0392b',
+      lens_hologram: '#117a65',
       sensing: '#2e86c1',
       general: '#1e8449',
     };
     const CAT_LABELS = { optimization:'Optimization', deep_learning:'Deep Learning', generative:'Generative', hybrid:'Hybrid', analytical:'Analytical' };
-    const DOM_LABELS = { microwave:'Microwave', antenna:'Antenna/Patch', absorber:'Absorber', lens_hologram:'Lens/Hologram', filter:'Filter', beam_steering:'Beam Steering', sensing:'Sensing', general:'General' };
+    const DOM_LABELS = { filter:'FSS / Filter', antenna:'Patch Antenna', microwave:'Microwave / RIS', absorber:'Absorber', beam_steering:'Beam Steering', lens_hologram:'Lens / Hologram', sensing:'Sensing', general:'General' };
     const TRAIN_LABELS = { supervised:'Supervised', unsupervised:'Unsupervised', reinforcement:'Reinforcement' };
     const CATEGORY_ANGLES = {
       optimization: -Math.PI / 2,
@@ -667,12 +667,12 @@
       analytical: Math.PI * 1.5,
     };
     const DOMAIN_OFFSETS = {
-      microwave: -0.40,
+      filter: -0.40,
       antenna: -0.22,
-      absorber: -0.10,
-      lens_hologram: 0.0,
-      filter: 0.12,
-      beam_steering: 0.24,
+      microwave: -0.08,
+      absorber: 0.0,
+      beam_steering: 0.12,
+      lens_hologram: 0.25,
       sensing: 0.36,
       general: 0.46,
     };
