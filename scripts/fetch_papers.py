@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fetch new world model papers from arxiv and append them to papers.js.
+Fetch new metasurface inverse design papers from arxiv and append them to papers.js.
 
 Usage:
   python scripts/fetch_papers.py              # last 18 months (catches missed quarters)
@@ -17,26 +17,37 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 # ── arxiv queries ─────────────────────────────────────────────────────────────
-# ti: = title field   cat: = arxiv category (cs.LG/cs.RO/cs.CV/cs.AI)
-# Pinning to CS categories prevents physics/astro false positives.
+# ti: = title field   cat: = arxiv category (cs.LG/cs.AI/eess.SP/physics.optics)
+# Pinning to these categories reduces unrelated arXiv false positives.
 QUERIES = [
-    'ti:"world model" AND (cat:cs.LG OR cat:cs.AI OR cat:cs.RO OR cat:cs.CV)',
-    'ti:"world models" AND (cat:cs.LG OR cat:cs.AI OR cat:cs.RO OR cat:cs.CV)',
-    'ti:"world foundation model" AND (cat:cs.LG OR cat:cs.AI OR cat:cs.RO OR cat:cs.CV)',
-    'ti:"neural world model" AND cat:cs.LG',
-    'ti:"video world model" AND (cat:cs.LG OR cat:cs.CV)',
-    'ti:"diffusion world model" AND (cat:cs.LG OR cat:cs.CV)',
-    'ti:"latent world model" AND cat:cs.LG',
-    'ti:"generative world model" AND (cat:cs.LG OR cat:cs.AI)',
+    'ti:"metasurface" AND ti:"inverse design" AND (cat:cs.LG OR cat:cs.AI OR cat:eess.SP OR cat:physics.optics)',
+    'ti:"inverse design" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP)',
+    'ti:"deep learning" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP OR cat:physics.optics)',
+    'ti:"neural network" AND ti:"metasurface" AND cat:eess.SP',
+    'ti:"generative" AND ti:"metasurface" AND (cat:cs.LG OR cat:eess.SP)',
+    'ti:"metasurface" AND ti:"optimization" AND (cat:eess.SP OR cat:physics.optics)',
+    'ti:"programmable metasurface" AND (cat:eess.SP OR cat:cs.LG)',
+    'ti:"reconfigurable metasurface" AND (cat:eess.SP OR cat:cs.LG)',
+    'ti:"intelligent metasurface" AND (cat:eess.SP OR cat:cs.AI)',
+    'ti:"microwave metasurface" AND ti:"design" AND cat:eess.SP',
+    'ti:"patch antenna" AND ti:"machine learning" AND cat:eess.SP',
+    'ti:"RIS" AND ti:"deep learning" AND (cat:eess.SP OR cat:cs.IT)',
 ]
 
 # At least one of these must appear in title+abstract for a paper to be included
 RELEVANCE_KEYWORDS = [
-    "reinforcement learning", "model-based", "model based",
-    "policy", "planning", "simulation", "robot", "driving",
-    "dynamics model", "latent dynamics", "video generation",
-    "game", "agent", "environment model", "imagination",
-    "world model", "world models",
+    "metasurface", "meta-surface", "metaatom", "meta-atom",
+    "inverse design", "inverse problem",
+    "electromagnetic", "em simulation",
+    "unit cell", "subwavelength",
+    "reconfigurable intelligent surface", "RIS",
+    "beam steering", "beam forming",
+    "absorber", "absorbing",
+    "hologram", "holographic",
+    "patch antenna", "microstrip",
+    "bandpass filter", "bandstop",
+    "coding metasurface", "programmable",
+    "topology optimization",
 ]
 
 DEFAULT_LOOKBACK_MONTHS = 18
@@ -50,32 +61,43 @@ def is_relevant(title: str, summary: str) -> bool:
 def categorize(title: str, summary: str):
     text = (title + " " + summary).lower()
 
-    if any(w in text for w in ["diffusion", "score matching", "ddpm", "ddim", "flow matching", "denoising"]):
-        category = "diffusion"
-    elif any(w in text for w in ["autoregressive", "gpt", "discrete token", "vq-vae", "vqvae", "codebook", "next-token"]):
-        category = "autoregressive"
-    elif any(w in text for w in ["transformer", "attention"]) and "latent" not in text:
-        category = "autoregressive"
-    elif any(w in text for w in ["latent space", "rssm", "variational", "vae", "latent dynamic", "latent representation"]):
-        category = "latent"
+    # METHOD (category)
+    if any(w in text for w in ["diffusion model", "ddpm", "score-based", "flow matching", "gan", "vae", "generative adversarial", "variational autoencoder", "denoising"]):
+        category = "generative"
+    elif any(w in text for w in ["deep learning", "neural network", "cnn", "transformer", "attention", "lstm", "mlp", "ann", "tandem"]):
+        category = "deep_learning"
+    elif any(w in text for w in ["adjoint", "gradient descent", "topology optim", "genetic algorithm", "particle swarm", "evolutionary", "simulated annealing", "bayesian optim"]):
+        category = "optimization"
+    elif any(w in text for w in ["analytical", "closed-form", "equivalent circuit", "transmission line", "coupled mode"]):
+        category = "analytical"
     else:
         category = "hybrid"
 
-    if any(w in text for w in ["driv", "vehicle", "waymo", "nuplan", "carla", "nuscenes", "autonomous"]):
-        domain = "autonomous_driving"
-    elif any(w in text for w in ["robot", "manipulation", "locomotion", "gripper", "dexterous", "embodied"]):
-        domain = "robotics"
-    elif any(w in text for w in ["atari", "minecraft", "game", "doom", "procgen", "gaming"]):
-        domain = "gaming"
-    elif any(w in text for w in ["video generation", "video synthesis", "text-to-video", "video prediction"]):
-        domain = "video"
+    # DOMAIN (application area)
+    if any(w in text for w in ["patch antenna", "microstrip", "antenna array", "aperture antenna"]):
+        domain = "antenna"
+    elif any(w in text for w in ["microwave", "millimeter wave", "mmwave", "mm-wave", "ghz", "radar", "ris", "reconfigurable intelligent"]):
+        domain = "microwave"
+    elif any(w in text for w in ["absorb", "perfect absorber", "wideband absorb", "narrowband absorb"]):
+        domain = "absorber"
+    elif any(w in text for w in ["hologram", "holograph", "lens", "flat lens", "metalens"]):
+        domain = "lens_hologram"
+    elif any(w in text for w in ["filter", "bandpass", "bandstop", "frequency selective"]):
+        domain = "filter"
+    elif any(w in text for w in ["beam steer", "beam form", "beam shap", "beam split", "radiation pattern"]):
+        domain = "beam_steering"
+    elif any(w in text for w in ["sensor", "sensing", "detect", "imaging"]):
+        domain = "sensing"
     else:
         domain = "general"
 
-    if any(w in text for w in ["online", "reinforcement learning", "on-policy", "real-time interaction", "real robot"]):
-        training = "online"
+    # DATA REGIME (training)
+    if any(w in text for w in ["reinforcement learning", "reward", "agent", "policy"]):
+        training = "reinforcement"
+    elif any(w in text for w in ["unsupervised", "self-supervised", "generative", "unlabeled", "autoencoder"]):
+        training = "unsupervised"
     else:
-        training = "offline"
+        training = "supervised"
 
     return category, domain, training
 
@@ -98,7 +120,7 @@ def main():
     existing_titles_lower = set(t.lower() for t in re.findall(r'title:\s*"([^"]+)"', content))
 
     cutoff = datetime.now() - timedelta(days=args.months * 30)
-    print(f"Searching arxiv for world model papers since {cutoff.strftime('%Y-%m-%d')} …\n")
+    print(f"Searching arxiv for metasurface inverse design papers since {cutoff.strftime('%Y-%m-%d')} ...\n")
 
     client = arxiv.Client(num_retries=3, delay_seconds=3)
     seen_ids: set[str] = set()

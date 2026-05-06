@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>World Models Atlas</title>
-  <meta name="description" content="A visual atlas of world model research, from foundational RL papers to newer generative world simulators." />
+  <title>Metasurface Inverse Design Atlas</title>
+  <meta name="description" content="An interactive atlas of inverse design methods for metasurfaces - from classical optimizers to deep generative models." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -28,17 +28,20 @@
       --accent2: #a8492f;
       --accent-light: #f5ebe7;
 
-      --c-latent: #3a7ca5;
-      --c-diffusion: #c45d3e;
-      --c-autoregressive: #5a8a5e;
+      --c-optimization: #3a7ca5;
+      --c-deep_learning: #5a8a5e;
+      --c-generative: #c45d3e;
       --c-hybrid: #b5873a;
+      --c-analytical: #7d3c98;
 
-      --d-robotics: #c45d3e;
-      --d-gaming: #3a7ca5;
-      --d-driving: #b5873a;
-      --d-video: #8b5ca0;
+      --d-microwave: #c45d3e;
+      --d-antenna: #3a7ca5;
+      --d-absorber: #b5873a;
+      --d-lens_hologram: #8b5ca0;
       --d-general: #6b665c;
-      --d-planning: #5a8a5e;
+      --d-filter: #5a8a5e;
+      --d-beam_steering: #a8492f;
+      --d-sensing: #2e86c1;
 
       --font-display: 'EB Garamond', Georgia, serif;
       --font-body: 'DM Sans', -apple-system, sans-serif;
@@ -554,8 +557,8 @@
   <!-- HEADER -->
   <header id="header">
     <div class="brand">
-      <span class="brand-name">World Models Atlas</span>
-      <span class="brand-sub">research map and reading graph</span>
+      <span class="brand-name">Metasurface Inverse Design Atlas</span>
+      <span class="brand-sub">methods, applications & lineage</span>
     </div>
     <div class="header-sep"></div>
     <div id="search-box">
@@ -565,7 +568,7 @@
     <div class="header-right">
       <div class="stat-pill"><strong id="vis-count">0</strong> / <span id="total-count">0</span></div>
       <div class="stat-pill"><strong id="structured-count">0</strong> structured</div>
-      <a class="gh-link" href="https://github.com/Shaswat2001/wm_papers" target="_blank" rel="noopener">
+      <a class="gh-link" href="https://github.com/SaarthakG-Dtu/Paper_atlas" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
       </a>
@@ -575,8 +578,8 @@
   <!-- SIDEBAR -->
   <aside id="sidebar">
     <div class="sidebar-intro">
-      <h2>Map the field, then zoom in.</h2>
-      <p>Foundational latent-model RL papers, newer generative simulators, and exploratory additions now share one view. Use the structured-only toggle when you want the cleaner backbone first.</p>
+        <h2>Map inverse design, then zoom in.</h2>
+        <p>Optimization algorithms, deep learning methods, and generative models for metasurface inverse design - spanning microwave to optical domains. Use structured-only to see the curated backbone first.</p>
       <div class="toolbar-row">
         <button id="clear-filters" class="ghost-btn" type="button">Clear filters</button>
         <label class="toggle-row"><input id="structured-only" type="checkbox" /> Structured only</label>
@@ -598,11 +601,11 @@
       <div id="f-category"></div>
     </div>
     <div class="fgroup">
-      <div class="fgroup-title">Domain</div>
+      <div class="fgroup-title">Application</div>
       <div id="f-domain"></div>
     </div>
     <div class="fgroup">
-      <div class="fgroup-title">Training</div>
+      <div class="fgroup-title">Data Regime</div>
       <div id="f-training"></div>
     </div>
     <div class="fgroup">
@@ -637,39 +640,41 @@
     // CONFIG
     // ═══════════════════════════════════════════
     const CAT_COLORS = {
-      latent: '#1c6ea4',
-      diffusion: '#c0392b',
-      autoregressive: '#27ae60',
+      optimization: '#1c6ea4',
+      deep_learning: '#27ae60',
+      generative: '#c0392b',
       hybrid: '#d68910',
-      evaluation: '#7d3c98',
-      application: '#2e4057',
+      analytical: '#7d3c98',
     };
     const DOM_COLORS = {
-      robotics: '#b03a2e',
-      gaming: '#1a5276',
-      autonomous_driving: '#ca6f1e',
-      video: '#76448a',
+      microwave: '#b03a2e',
+      antenna: '#1a5276',
+      absorber: '#ca6f1e',
+      lens_hologram: '#76448a',
+      filter: '#117a65',
+      beam_steering: '#c0392b',
+      sensing: '#2e86c1',
       general: '#1e8449',
-      planning: '#117a65',
     };
-    const CAT_LABELS = { latent:'Latent', diffusion:'Diffusion', autoregressive:'Autoregressive', hybrid:'Hybrid', evaluation:'Evaluation', application:'Application' };
-    const DOM_LABELS = { robotics:'Robotics', gaming:'Gaming', autonomous_driving:'Driving', video:'Video', general:'General', planning:'Planning' };
-    const TRAIN_LABELS = { online:'Online', offline:'Offline', both:'Both' };
+    const CAT_LABELS = { optimization:'Optimization', deep_learning:'Deep Learning', generative:'Generative', hybrid:'Hybrid', analytical:'Analytical' };
+    const DOM_LABELS = { microwave:'Microwave', antenna:'Antenna/Patch', absorber:'Absorber', lens_hologram:'Lens/Hologram', filter:'Filter', beam_steering:'Beam Steering', sensing:'Sensing', general:'General' };
+    const TRAIN_LABELS = { supervised:'Supervised', unsupervised:'Unsupervised', reinforcement:'Reinforcement' };
     const CATEGORY_ANGLES = {
-      latent: -Math.PI / 2,
-      autoregressive: -0.08,
-      diffusion: Math.PI / 2,
+      optimization: -Math.PI / 2,
+      deep_learning: 0.0,
+      generative: Math.PI / 2,
       hybrid: Math.PI,
-      evaluation: Math.PI * 1.28,
-      application: Math.PI * 1.58,
+      analytical: Math.PI * 1.5,
     };
     const DOMAIN_OFFSETS = {
-      robotics: -0.34,
-      gaming: -0.16,
-      autonomous_driving: 0.16,
-      video: 0.3,
-      general: 0,
-      planning: 0.42,
+      microwave: -0.40,
+      antenna: -0.22,
+      absorber: -0.10,
+      lens_hologram: 0.0,
+      filter: 0.12,
+      beam_steering: 0.24,
+      sensing: 0.36,
+      general: 0.46,
     };
 
     // ═══════════════════════════════════════════
@@ -848,9 +853,9 @@
     // FILTERS
     // ═══════════════════════════════════════════
     function buildFilters() {
-      const catOrder = ['latent', 'autoregressive', 'diffusion', 'hybrid', 'evaluation', 'application'];
-      const domOrder = ['general', 'robotics', 'gaming', 'autonomous_driving', 'video', 'planning'];
-      const trainOrder = ['online', 'offline', 'both'];
+      const catOrder = ['optimization', 'deep_learning', 'generative', 'hybrid', 'analytical'];
+      const domOrder = ['general', 'microwave', 'antenna', 'absorber', 'lens_hologram', 'filter', 'beam_steering', 'sensing'];
+      const trainOrder = ['supervised', 'unsupervised', 'reinforcement'];
       const cats = catOrder.filter(c => PAPERS.some(p => p.category === c));
       const doms = domOrder.filter(d => PAPERS.some(p => p.domain === d));
       const trains = trainOrder.filter(t => PAPERS.some(p => p.training === t));
